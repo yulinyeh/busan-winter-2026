@@ -1,220 +1,28 @@
 <!DOCTYPE html>
-<html lang="zh-Hant">
+<html lang="zh-TW">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>釜山冬日 6 天 5 夜・自由行手冊</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@500;700&family=Noto+Sans+TC:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<title>釜山冬日六日遊 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
 <style>
-:root{
-  --bg:#FBF3E6;
-  --surface:#FFFFFF;
-  --surface2:#FFF7EC;
-  --surface3:#FFEFD9;
-  --line:rgba(35,50,65,0.10);
-  --line-strong:rgba(35,50,65,0.20);
-  --text:#20303F;
-  --text-muted:#1E3040;
-  --text-dim:#3D5260;
-
-  --gold:#E8A33D;
-  --gold-deep:#9B6413;
-  --coral:#F0805A;
-  --coral-deep:#A83F1D;
-  --teal:#2AA298;
-  --teal-deep:#0E655C;
-  --purple:#8C7FDB;
-  --purple-deep:#4C3F9E;
-  --pink:#E0609A;
-  --pink-deep:#9E2E62;
-  --radius:16px;
-}
-*{box-sizing:border-box;}
-html{scroll-behavior:smooth;}
-body{
-  margin:0;
-  background:
-    radial-gradient(1000px 480px at 12% -10%, rgba(232,163,61,0.20), transparent 55%),
-    radial-gradient(900px 620px at 100% 0%, rgba(42,162,152,0.16), transparent 50%),
-    radial-gradient(700px 500px at 90% 90%, rgba(224,96,154,0.10), transparent 55%),
-    var(--bg);
-  color:var(--text);
-  font-family:'Noto Sans TC', -apple-system, sans-serif;
-  -webkit-font-smoothing:antialiased;
-  min-height:100vh;
-}
-.wrap{max-width:760px; margin:0 auto; padding:0 18px 80px;}
-h1,h2,h3,h4{font-family:'Noto Serif TC','Noto Sans TC',serif; font-weight:700; margin:0;}
-.mono{font-family:'Space Mono',monospace;}
-
-.masthead{padding:26px 0 14px; text-align:center;}
-.masthead .eyebrow{font-family:'Space Mono',monospace; font-size:11px; letter-spacing:.18em; text-transform:uppercase; color:var(--teal-deep); margin-bottom:8px;}
-.masthead h1{font-size:23px; line-height:1.4; color:var(--text);}
-.masthead h1 .accent{color:var(--coral-deep);}
-.masthead .sub{color:var(--text-muted); font-size:12.5px; margin-top:6px;}
-.masthead .sunbar{height:4px; width:120px; margin:16px auto 0; border-radius:4px; background:linear-gradient(90deg, var(--gold), var(--coral), var(--pink));}
-
-.top-tabs{position:sticky; top:0; z-index:30; display:flex; gap:0; background:var(--bg); border-bottom:1px solid var(--line); margin-top:14px; overflow-x:auto; scrollbar-width:none;}
-.top-tabs::-webkit-scrollbar{display:none;}
-.top-tab{flex:1; min-width:84px; text-align:center; padding:13px 8px 11px; cursor:pointer; font-size:13px; color:var(--text-dim); border-bottom:2px solid transparent; white-space:nowrap; font-weight:500; transition:color .2s, border-color .2s;}
-.top-tab .n{display:block; font-family:'Space Mono',monospace; font-size:10px; letter-spacing:.1em; color:var(--text-dim); margin-bottom:2px;}
-.top-tab.active{color:var(--coral-deep); border-color:var(--coral);}
-.top-tab.active .n{color:var(--coral-deep);}
-
-.page{display:none; padding-top:22px;}
-.page.active{display:block; animation:fade .3s ease;}
-@keyframes fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
-
-.section-head{margin:0 0 16px;}
-.section-head h2{font-size:16px; color:var(--teal-deep);}
-.section-head p{margin:4px 0 0; font-size:12.5px; color:var(--text-muted);}
-
-.passes{display:flex; gap:14px; flex-wrap:wrap;}
-.pass{flex:1; min-width:280px; display:flex; background:var(--surface); border:1px solid var(--line); border-radius:16px; overflow:hidden; box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.pass-main{flex:1; padding:16px;}
-.pass-main .dir{font-size:11px; letter-spacing:.14em; text-transform:uppercase; color:var(--text-dim); margin-bottom:8px;}
-.pass-main .route{font-family:'Space Mono',monospace; font-size:19px; font-weight:700; color:var(--text);}
-.pass-main .route span{color:var(--text-dim); font-weight:400; margin:0 6px; font-size:15px;}
-.pass-main .times{margin-top:6px; font-size:13px; color:var(--text-muted);}
-.pass-main .note{margin-top:10px; padding-top:10px; border-top:1px dashed var(--line); font-size:12px; color:var(--text-dim); line-height:1.6;}
-.pass-stub{width:92px; background:var(--surface2); border-left:2px dashed var(--line-strong); display:flex; flex-direction:column; align-items:center; justify-content:center; gap:4px; position:relative; padding:10px 6px;}
-.pass-stub::before,.pass-stub::after{content:''; position:absolute; left:-9px; width:18px; height:18px; border-radius:50%; background:var(--bg);}
-.pass-stub::before{top:-9px;} .pass-stub::after{bottom:-9px;}
-.pass-stub .airline{font-size:10.5px; color:var(--text-muted); text-align:center;}
-.pass-stub .flightno{font-family:'Space Mono',monospace; font-size:14px; color:var(--coral-deep); font-weight:700;}
-.pass-stub .date{font-size:10.5px; color:var(--text-dim);}
-
-.stay-card{background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:18px; margin-top:16px; box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.stay-card .name{font-size:16px; font-weight:700; color:var(--text);}
-.stay-card .meta{font-size:12.5px; color:var(--text-muted); margin-top:6px; line-height:1.8;}
-.stay-card .missing{margin-top:10px; padding:10px 12px; background:rgba(42,162,152,0.10); border-left:3px solid var(--teal); border-radius:0 8px 8px 0; font-size:12px; color:var(--teal-deep);}
-
-.alerts{display:flex; flex-direction:column; gap:12px;}
-.alert{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:flex; gap:12px; align-items:flex-start; border-left:3px solid var(--coral); box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.alert.teal{border-left-color:var(--teal);}
-.alert .ico{font-size:18px; line-height:1.4;}
-.alert .body{flex:1;}
-.alert .title{font-weight:700; font-size:14px; margin-bottom:4px; color:var(--text);}
-.alert .title .tag-inline{font-family:'Space Mono',monospace; font-size:11px; color:var(--coral-deep); margin-left:6px;}
-.alert.teal .title .tag-inline{color:var(--teal-deep);}
-.alert p{margin:2px 0; font-size:12.8px; color:var(--text-muted); line-height:1.7;}
-.alert .cd{margin-top:6px; font-size:12px;}
-.alert .cd b{font-family:'Space Mono',monospace; color:var(--coral-deep);}
-.alert.teal .cd b{color:var(--teal-deep);}
-
-.check-card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:16px 18px; margin-bottom:14px; box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.check-card h3{font-size:14px; color:var(--gold-deep); margin-bottom:10px;}
-.check-item{display:flex; align-items:flex-start; gap:10px; padding:8px 0; border-bottom:1px solid var(--line); cursor:pointer;}
-.check-item:last-child{border-bottom:none;}
-.check-item .box{width:18px; height:18px; border-radius:5px; border:1.5px solid var(--line-strong); flex-shrink:0; margin-top:1px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff;}
-.check-item.done .box{background:var(--teal); border-color:var(--teal);}
-.check-item.done .box::after{content:'✓';}
-.check-item .txt{font-size:13px; color:var(--text-muted); line-height:1.6;}
-.check-item.done .txt{color:var(--text-dim); text-decoration:line-through;}
-.disclaimer{font-size:11.5px; color:var(--text-dim); margin:-6px 0 16px; line-height:1.7;}
-
-.rail-outer{position:sticky; top:46px; z-index:20; background:linear-gradient(180deg, var(--bg) 78%, transparent); padding-top:8px; margin-bottom:6px;}
-.rail{display:flex; align-items:flex-start; gap:0; overflow-x:auto; padding:6px 4px 14px; position:relative; scrollbar-width:none;}
-.rail::-webkit-scrollbar{display:none;}
-.rail-line{position:absolute; left:38px; right:38px; top:29px; height:2px; background:var(--line-strong); z-index:0;}
-.stop{flex:0 0 auto; width:78px; display:flex; flex-direction:column; align-items:center; gap:6px; cursor:pointer; position:relative; z-index:1; background:transparent; border:none; padding:6px 0 0; font-family:inherit;}
-.stop .dot{width:16px; height:16px; border-radius:50%; background:var(--surface); border:2px solid var(--line-strong); transition:all .25s ease;}
-.stop .lbl{font-size:11px; color:var(--text-dim); font-family:'Space Mono',monospace; transition:color .25s ease;}
-.stop .sub{font-size:10px; color:var(--text-dim); opacity:.8;}
-.stop.active .dot{background:linear-gradient(135deg, var(--gold), var(--coral)); border-color:var(--coral); box-shadow:0 0 0 4px rgba(240,128,90,0.18);}
-.stop.active .lbl{color:var(--coral-deep); font-weight:700;}
-
-.day-panel{display:none;}
-.day-panel.active{display:block; animation:fade .3s ease;}
-.day-header{margin-bottom:14px;}
-.day-header .tag-inline{font-family:'Space Mono',monospace; font-size:11px; color:var(--coral-deep); letter-spacing:.1em;}
-.day-header h2{font-size:19px; margin-top:4px; color:var(--text);}
-.day-header .theme-sub{color:var(--text-muted); font-size:12.5px; margin-top:4px;}
-
-.filterbar{display:flex; gap:7px; flex-wrap:wrap; margin:0 0 16px;}
-.filterbar .chip{font-size:11.5px; padding:5px 12px; border-radius:999px; border:1px solid var(--line); background:var(--surface2); color:var(--text-muted); cursor:pointer; user-select:none;}
-.filterbar .chip.on{background:var(--gold); color:#4A3308; border-color:var(--gold); font-weight:700;}
-
-.card{background:var(--surface); border:1px solid var(--line); border-radius:var(--radius); padding:18px 18px 6px; margin-bottom:16px; box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.item{display:flex; gap:14px; padding:15px 0; border-bottom:1px solid var(--line); transition:opacity .2s;}
-.item:last-child{border-bottom:none;}
-.item.dim{opacity:.3;}
-.item-time{font-family:'Space Mono',monospace; color:var(--coral-deep); font-size:13px; min-width:50px; padding-top:2px; flex-shrink:0;}
-.item-body h4{font-size:15px; font-weight:700; margin-bottom:5px; line-height:1.5; color:var(--text);}
-.item-body p{margin:0; font-size:13px; color:var(--text-muted); line-height:1.75;}
-.tags{display:flex; gap:6px; margin-top:8px; flex-wrap:wrap;}
-.tag{font-size:10.8px; padding:3px 9px; border-radius:999px; white-space:nowrap; font-weight:500;}
-.tag-food{background:rgba(240,128,90,.15); color:var(--coral-deep);}
-.tag-vbp{background:rgba(42,162,152,.15); color:var(--teal-deep);}
-.tag-photo{background:rgba(224,96,154,.15); color:var(--pink-deep);}
-.tag-season{background:rgba(232,163,61,.18); color:var(--gold-deep);}
-.tag-sunset{background:linear-gradient(90deg, rgba(232,163,61,.2), rgba(240,128,90,.2)); color:var(--coral-deep);}
-.tag-sat{background:rgba(140,127,219,.16); color:var(--purple-deep);}
-.tag-kdrama{background:rgba(140,127,219,.16); color:var(--purple-deep);}
-.tag-coffee{background:rgba(35,50,65,.06); color:var(--text-muted);}
-.tag-culture{background:rgba(35,50,65,.06); color:var(--text-muted);}
-.tip{margin-top:14px; padding:13px 15px; background:var(--surface2); border-left:3px solid var(--gold); border-radius:0 10px 10px 0; font-size:12.6px; color:var(--text-muted); line-height:1.85;}
-.tip b{color:var(--text);}
-
-/* vertical time range */
-.item-time{text-align:right;}
-.item-time-range{display:flex; flex-direction:column; align-items:flex-end; gap:0; padding-top:2px;}
-.item-time-range .t{display:block; font-family:'Space Mono',monospace; font-size:13px; color:var(--coral-deep); line-height:1.35;}
-.item-time-range .range-sep{font-size:9px; color:var(--line-strong); align-self:flex-end; line-height:1.3; padding-right:1px;}
-
-/* 順路推薦 divider inside card */
-.extras-divider{display:flex; align-items:center; gap:10px; padding:14px 0 6px; margin-top:4px;}
-.extras-divider::before,.extras-divider::after{content:''; flex:1; height:0; border-top:1px dashed rgba(155,100,19,0.30);}
-.extras-divider span{font-size:11px; font-weight:700; color:var(--gold-deep); white-space:nowrap; letter-spacing:.05em;}
-
-/* recommended item row */
-.item-rec{background:rgba(232,163,61,0.05);}
-.rec-time{min-width:50px; flex-shrink:0; padding-top:3px; display:flex; align-items:flex-start;}
-.rec-badge{display:inline-flex; font-size:10px; font-weight:700; padding:3px 8px; border-radius:999px; background:linear-gradient(135deg,var(--gold),#e8b84a); color:#4A3308; white-space:nowrap; line-height:1.4; letter-spacing:.02em;}
-.item-rec-name{font-size:14px; font-weight:700; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px; flex-wrap:wrap;}
-.item-rec-meta{font-size:11px; color:var(--text-dim); font-family:'Space Mono',monospace; margin:2px 0 5px;}
-.item-rec-desc{font-size:12.5px; color:var(--text-muted); line-height:1.7; margin:0;}
-
-.map-link{display:inline-flex; align-items:center; gap:3px; color:var(--teal-deep); text-decoration:none; font-size:11.5px; font-weight:500; margin-left:6px; padding:2px 8px; background:rgba(42,162,152,0.10); border-radius:999px; vertical-align:middle; white-space:nowrap; transition:background .2s;}
-.map-link:hover{background:rgba(42,162,152,0.22);}
-
-.route-row-wrap{padding:14px 0 2px; border-bottom:1px solid var(--line); margin-bottom:14px;}
-.route-row-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px;}
-.route-row-head span{font-size:12px; font-weight:700; color:var(--teal-deep);}
-.route-row-head a{font-size:11px; color:var(--teal-deep); text-decoration:none; padding:3px 9px; border:1px solid rgba(42,162,152,0.4); border-radius:999px;}
-.route-row-head a:hover{background:rgba(42,162,152,0.10);}
-.route-row{display:flex; align-items:center; overflow-x:auto; scrollbar-width:none; padding-bottom:10px; gap:0;}
-.route-row::-webkit-scrollbar{display:none;}
-.route-pill{flex:0 0 auto; display:flex; flex-direction:column; align-items:center; gap:3px; text-decoration:none; padding:6px 10px; border-radius:10px; transition:background .2s;}
-.route-pill:hover{background:rgba(42,162,152,0.08);}
-.route-pill-num{width:22px; height:22px; border-radius:50%; background:linear-gradient(135deg, var(--teal), var(--teal-deep)); color:#fff; font-size:10px; font-weight:700; display:flex; align-items:center; justify-content:center; font-family:'Space Mono',monospace;}
-.route-pill-name{font-size:11.5px; font-weight:700; color:var(--text); white-space:nowrap; max-width:80px; text-align:center; line-height:1.3;}
-.route-pill-time{font-size:10px; color:var(--coral-deep); font-family:'Space Mono',monospace; white-space:nowrap;}
-.route-sep{color:var(--line-strong); font-size:12px; margin:0 2px; flex-shrink:0; padding-bottom:14px;}
-
-.guide-grid{display:grid; grid-template-columns:repeat(auto-fit,minmax(210px,1fr)); gap:12px; margin-bottom:14px;}
-.mini-card{background:var(--surface); border:1px solid var(--line); border-radius:12px; padding:14px 16px; box-shadow:0 2px 10px rgba(35,50,65,0.05);}
-.mini-card h4{font-size:13.5px; margin-bottom:8px; color:var(--teal-deep);}
-.mini-card ul{margin:0; padding-left:0; list-style:none;}
-.mini-card li{font-size:12.5px; color:var(--text-muted); padding:5px 0; border-top:1px solid var(--line);}
-.mini-card li:first-child{border-top:none;}
-.mini-card li b{color:var(--text); font-weight:700;}
-table.brand-table{width:100%; border-collapse:collapse; font-size:12px; margin-top:6px;}
-table.brand-table th{text-align:left; font-size:11px; color:var(--text-dim); font-weight:400; padding:8px; border-bottom:1px solid var(--line-strong); white-space:nowrap;}
-table.brand-table td{padding:10px 8px; border-bottom:1px solid var(--line); color:var(--text-muted); vertical-align:top;}
-table.brand-table td b{color:var(--text); font-weight:700; display:block; margin-bottom:2px;}
-.table-wrap{overflow-x:auto; -webkit-overflow-scrolling:touch;}
-
-footer{text-align:center; padding:40px 0 10px; color:var(--text-dim); font-size:11.5px; font-family:'Space Mono',monospace;}
-
-/* Leaflet core CSS (inlined) */
+/* Leaflet core CSS inlined */
 .leaflet-pane,.leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-tile-container,.leaflet-pane>svg,.leaflet-pane>canvas,.leaflet-zoom-box,.leaflet-image-layer,.leaflet-layer{position:absolute;left:0;top:0}
 .leaflet-container{overflow:hidden}
 .leaflet-tile,.leaflet-marker-icon,.leaflet-marker-shadow{-webkit-user-select:none;-moz-user-select:none;user-select:none;-webkit-user-drag:none}
 .leaflet-tile::selection{background:transparent}
-.leaflet-tile{visibility:hidden}
+.leaflet-safari .leaflet-tile{image-rendering:-webkit-optimize-contrast}
+.leaflet-safari .leaflet-tile-container{width:1600px;height:1600px;-webkit-transform-origin:0 0}
+.leaflet-marker-icon,.leaflet-marker-shadow{display:block}
+.leaflet-container .leaflet-overlay-pane svg{max-width:none!important;max-height:none!important}
+.leaflet-container.leaflet-touch-zoom{-ms-touch-action:pan-x pan-y;touch-action:pan-x pan-y}
+.leaflet-container.leaflet-touch-drag{-ms-touch-action:pinch-zoom;touch-action:none;touch-action:pinch-zoom}
+.leaflet-container.leaflet-touch-drag.leaflet-touch-zoom{-ms-touch-action:none;touch-action:none}
+.leaflet-container{-webkit-tap-highlight-color:transparent}
+.leaflet-container a{-webkit-tap-highlight-color:rgba(51,181,229,.4)}
+.leaflet-tile{filter:inherit;visibility:hidden}
+.leaflet-tile-loaded{visibility:inherit}
+.leaflet-zoom-box{width:0;height:0;-moz-box-sizing:border-box;box-sizing:border-box;z-index:800}
 .leaflet-overlay-pane svg{-moz-user-select:none}
 .leaflet-pane{z-index:400}
 .leaflet-tile-pane{z-index:200}
@@ -225,23 +33,8 @@ footer{text-align:center; padding:40px 0 10px; color:var(--text-dim); font-size:
 .leaflet-popup-pane{z-index:700}
 .leaflet-map-pane canvas{z-index:100}
 .leaflet-map-pane svg{z-index:200}
-.leaflet-tile{filter:inherit;visibility:inherit}
-.leaflet-tile-loaded{visibility:inherit}
-.leaflet-zoom-box{width:0;height:0;-moz-box-sizing:border-box;box-sizing:border-box;z-index:800}
-.leaflet-container{font-family:Helvetica Neue,Arial,Helvetica,sans-serif;font-size:12px;font-size:.75rem;line-height:1.5;-webkit-tap-highlight-color:transparent;background:#ddd;outline:0}
-.leaflet-container a{color:#0078A8}
-.leaflet-container a.leaflet-active{outline:2px solid orange}
-.leaflet-zoom-animated{-webkit-transform-origin:left top;-ms-transform-origin:left top;transform-origin:left top}
-.leaflet-popup-close-button{position:absolute;top:0;right:0;padding:4px 4px 0 0;border:none;text-align:center;width:18px;height:14px;font:16px/14px Tahoma,Verdana,sans-serif;color:#757575;text-decoration:none;background:transparent}
-.leaflet-popup-close-button:hover,.leaflet-popup-close-button:focus{color:#585858}
-.leaflet-interactive{cursor:pointer}
-.leaflet-grab{cursor:-webkit-grab;cursor:grab}
-.leaflet-crosshair,.leaflet-crosshair .leaflet-interactive{cursor:crosshair}
-.leaflet-popup-pane,.leaflet-control{cursor:auto}
-.leaflet-dragging .leaflet-grab,.leaflet-dragging .leaflet-grab .leaflet-interactive,.leaflet-dragging .leaflet-marker-draggable{cursor:move;cursor:-webkit-grabbing;cursor:grabbing}
-.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-image-layer,.leaflet-pane>svg path,.leaflet-tile-container{pointer-events:none}
-.leaflet-marker-icon.leaflet-interactive,.leaflet-image-layer.leaflet-interactive,.leaflet-pane>svg path.leaflet-interactive,svg.leaflet-image-layer.leaflet-interactive path{pointer-events:visiblePainted;pointer-events:auto}
-.leaflet-container{-webkit-tap-highlight-color:transparent}
+.leaflet-vml-shape{width:1px;height:1px}
+.lvml{behavior:url(#default#VML);display:inline-block;position:absolute}
 .leaflet-control{position:relative;z-index:800;pointer-events:visiblePainted;pointer-events:auto}
 .leaflet-top,.leaflet-bottom{position:absolute;z-index:1000;pointer-events:none}
 .leaflet-top{top:0}
@@ -256,17 +49,25 @@ footer{text-align:center; padding:40px 0 10px; color:var(--text-dim); font-size:
 .leaflet-right .leaflet-control{margin-right:10px}
 .leaflet-fade-anim .leaflet-popup{opacity:0;-webkit-transition:opacity .2s linear;-moz-transition:opacity .2s linear;transition:opacity .2s linear}
 .leaflet-fade-anim .leaflet-map-pane .leaflet-popup{opacity:1}
-.leaflet-zoom-animated{-webkit-transition:-webkit-transform .25s cubic-bezier(0,0,.25,1);-moz-transition:-moz-transform .25s cubic-bezier(0,0,.25,1);transition:transform .25s cubic-bezier(0,0,.25,1)}
-@media print{.leaflet-zoom-animated{-webkit-transition:none!important;-moz-transition:none!important;transition:none!important}}
-.leaflet-zoom-anim .leaflet-zoom-animated{will-change:transform}
+.leaflet-zoom-animated{-webkit-transform-origin:0 0;-ms-transform-origin:0 0;transform-origin:0 0}
+svg.leaflet-zoom-animated{will-change:transform}
+.leaflet-zoom-anim .leaflet-zoom-animated{-webkit-transition:-webkit-transform .25s cubic-bezier(0,0,.25,1);-moz-transition:-moz-transform .25s cubic-bezier(0,0,.25,1);transition:transform .25s cubic-bezier(0,0,.25,1)}
 .leaflet-zoom-anim .leaflet-tile,.leaflet-pan-anim .leaflet-tile{-webkit-transition:none;-moz-transition:none;transition:none}
-.leaflet-zoom-anim .leaflet-zoom-animated.leaflet-retrieve-target{pointer-events:none}
-.leaflet-marker-icon,.leaflet-marker-shadow{display:block}
-.leaflet-container img{padding:0;max-width:none!important;max-height:none!important}
-.leaflet-container img.leaflet-tile{mix-blend-mode:plus-lighter}
+.leaflet-zoom-anim .leaflet-zoom-animated{will-change:transform}
+.leaflet-interactive{cursor:pointer}
+.leaflet-grab{cursor:-webkit-grab;cursor:-moz-grab;cursor:grab}
+.leaflet-crosshair,.leaflet-crosshair .leaflet-interactive{cursor:crosshair}
+.leaflet-popup-pane,.leaflet-control{cursor:auto}
+.leaflet-dragging .leaflet-grab,.leaflet-dragging .leaflet-grab .leaflet-interactive,.leaflet-dragging .leaflet-marker-draggable{cursor:move;cursor:-webkit-grabbing;cursor:-moz-grabbing;cursor:grabbing}
+.leaflet-marker-icon,.leaflet-marker-shadow,.leaflet-image-layer,.leaflet-pane>svg path,.leaflet-tile-container{pointer-events:none}
+.leaflet-marker-icon.leaflet-interactive,.leaflet-image-layer.leaflet-interactive,.leaflet-pane>svg path.leaflet-interactive,svg.leaflet-image-layer.leaflet-interactive path{pointer-events:visiblePainted;pointer-events:auto}
+.leaflet-container{background:#ddd;outline-offset:1px}
+.leaflet-container a{color:#0078a8}
+.leaflet-zoom-box{border:2px dotted #38f;background:rgba(255,255,255,.5)}
+.leaflet-control-zoom a{background-color:#fff;border-bottom:1px solid #ccc;color:#000;width:26px;height:26px;line-height:26px;display:block;text-align:center;text-decoration:none;font:bold 18px 'Lucida Console',Monaco,monospace}
+.leaflet-control-zoom a,.leaflet-control-zoom-in,.leaflet-control-zoom-out{background-color:#fff;border:2px solid rgba(0,0,0,.2);border-radius:4px;color:#333}
 .leaflet-bar{box-shadow:0 1px 5px rgba(0,0,0,.65);border-radius:4px}
-.leaflet-bar a{background-color:#fff;border-bottom:1px solid #ccc;width:26px;height:26px;line-height:26px;display:block;text-align:center;text-decoration:none;color:black}
-.leaflet-bar a,.leaflet-control-layers-toggle{background-position:50% 50%;background-repeat:no-repeat;display:block}
+.leaflet-bar a{line-height:26px;width:26px;height:26px;display:block;text-align:center;text-decoration:none;color:#000;font:bold 18px/26px 'Lucida Console',Monaco,monospace;background:#fff;cursor:pointer}
 .leaflet-bar a:hover,.leaflet-bar a:focus{background-color:#f4f4f4}
 .leaflet-bar a:first-child{border-top-left-radius:4px;border-top-right-radius:4px}
 .leaflet-bar a:last-child{border-bottom-left-radius:4px;border-bottom-right-radius:4px;border-bottom:none}
@@ -277,611 +78,594 @@ footer{text-align:center; padding:40px 0 10px; color:var(--text-dim); font-size:
 .leaflet-control-zoom-in,.leaflet-control-zoom-out{font:bold 18px 'Lucida Console',Monaco,monospace;text-indent:1px}
 .leaflet-touch .leaflet-control-zoom-in{font-size:22px}
 .leaflet-touch .leaflet-control-zoom-out{font-size:20px}
-.leaflet-control-attribution{background:rgba(255,255,255,.8);margin:0}
+.leaflet-control-attribution{padding:0 5px;color:#333;line-height:1.4}
 .leaflet-control-attribution a{text-decoration:none}
 .leaflet-control-attribution a:hover,.leaflet-control-attribution a:focus{text-decoration:underline}
-.leaflet-control-attribution span{aria-hidden:true}
-.leaflet-left .leaflet-control-attribution{border-radius:0 3px 3px 0}
-.leaflet-right .leaflet-control-attribution{border-radius:3px 0 0 3px}
+.leaflet-attribution-flag{display:inline!important;vertical-align:baseline!important;width:1em;height:.6669em}
+.leaflet-left .leaflet-control-scale{margin-left:5px}
+.leaflet-bottom .leaflet-control-scale{margin-bottom:5px}
+.leaflet-control-scale-line{border:2px solid #777;border-top:none;line-height:1.1;padding:2px 5px 1px;font-size:11px;white-space:nowrap;overflow:hidden;-moz-box-sizing:border-box;box-sizing:border-box;background:rgba(255,255,255,.5)}
+.leaflet-control-scale-line:not(:first-child){border-top:2px solid #777;border-bottom:none;margin-top:-2px}
+.leaflet-control-scale-line:not(:first-child):not(:last-child){border-bottom:2px solid #777}
+.leaflet-touch .leaflet-control-attribution,.leaflet-touch .leaflet-control-layers,.leaflet-touch .leaflet-bar{box-shadow:none}
+.leaflet-touch .leaflet-control-layers,.leaflet-touch .leaflet-bar{border:2px solid rgba(0,0,0,.2);background-clip:padding-box}
 .leaflet-popup{position:absolute;text-align:center;margin-bottom:20px}
-.leaflet-popup-content-wrapper{padding:1px;text-align:left;border-radius:12px;background:white;color:#20303F;box-shadow:0 3px 14px rgba(0,0,0,.4)}
-.leaflet-popup-content{margin:13px 24px 13px 20px;line-height:1.5;max-height:200px;overflow-y:auto}
-.leaflet-popup-content p{margin:17px 0}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff;color:#333;box-shadow:0 3px 14px rgba(0,0,0,.4)}
+.leaflet-popup-content-wrapper{padding:1px;text-align:left;border-radius:12px}
 .leaflet-popup-tip-container{width:40px;height:20px;position:absolute;left:50%;margin-left:-20px;overflow:hidden;pointer-events:none}
-.leaflet-popup-tip{background:white;width:17px;height:17px;padding:1px;margin:-10px auto 0;pointer-events:auto;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}
-.leaflet-container a.leaflet-popup-close-button{position:absolute;top:0;right:0;padding:4px 4px 0 0;border:none;text-align:center;width:18px;height:14px;font:16px/14px Tahoma,Verdana,sans-serif;color:#757575;text-decoration:none;background:transparent}
-.leaflet-container a.leaflet-popup-close-button:hover,.leaflet-container a.leaflet-popup-close-button:focus{color:#585858}
+.leaflet-popup-tip{width:17px;height:17px;padding:1px;margin:-10px auto 0;-webkit-transform:rotate(45deg);-moz-transform:rotate(45deg);-ms-transform:rotate(45deg);transform:rotate(45deg)}
+.leaflet-popup-content-wrapper,.leaflet-popup-tip{background:#fff;color:#333;box-shadow:0 3px 14px rgba(0,0,0,.4)}
+.leaflet-popup-content{margin:13px 24px 13px 20px;line-height:1.3;font-size:13px}
+.leaflet-popup-content p{margin:17px 0}
+.leaflet-popup-close-button{position:absolute;top:0;right:0;border:none;text-align:center;width:24px;height:24px;font:16px/24px Tahoma,Verdana,sans-serif;color:#757575;text-decoration:none;background:transparent}
+.leaflet-popup-close-button:hover,.leaflet-popup-close-button:focus{color:#585858}
 .leaflet-popup-scrolled{overflow:auto}
-.leaflet-oldie .leaflet-top,.leaflet-oldie .leaflet-bottom{position:absolute;top:0;left:0;right:0;bottom:0}
+.leaflet-oldie .leaflet-popup-content-wrapper{-ms-zoom:1}
+.leaflet-oldie .leaflet-popup-tip{width:24px;-ms-filter:"progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678, M12=0.70710678, M21=-0.70710678, M22=0.70710678)";filter:progid:DXImageTransform.Microsoft.Matrix(M11=0.70710678,M12=0.70710678,M21=-0.70710678,M22=0.70710678)}
+.leaflet-oldie .leaflet-control-zoom,.leaflet-oldie .leaflet-control-layers,.leaflet-oldie .leaflet-popup-content-wrapper,.leaflet-oldie .leaflet-popup-tip{border:1px solid #999}
+.leaflet-div-icon{background:#fff;border:1px solid #666}
+.leaflet-tooltip{position:absolute;padding:6px;background-color:#fff;border:1px solid #fff;border-radius:3px;color:#222;white-space:nowrap;-webkit-user-select:none;-moz-user-select:none;user-select:none;pointer-events:none;box-shadow:0 1px 3px rgba(0,0,0,.4)}
+.leaflet-tooltip.leaflet-interactive{cursor:pointer;pointer-events:auto}
+.leaflet-tooltip-top:before,.leaflet-tooltip-bottom:before,.leaflet-tooltip-left:before,.leaflet-tooltip-right:before{position:absolute;pointer-events:none;border:6px solid transparent;background:transparent;content:""}
+.leaflet-tooltip-bottom{margin-top:6px}
+.leaflet-tooltip-top{margin-top:-6px}
+.leaflet-tooltip-bubble .leaflet-tooltip-top:before{bottom:0;left:50%;margin-left:-6px;border-top-color:#fff}
+.leaflet-tooltip-bubble .leaflet-tooltip-bottom:before{top:0;left:50%;margin-left:-6px;border-bottom-color:#fff}
+.leaflet-tooltip-left:before{right:0;top:50%;margin-top:-6px;border-left-color:#fff}
+.leaflet-tooltip-right:before{left:0;top:50%;margin-top:-6px;border-right-color:#fff}
+</style>
+<style>
+:root{
+  --bg:#0f1117;--card:#1a1d27;--card2:#22263a;--accent:#4f8ef7;--gold:#f5c842;
+  --vbp:#e05c5c;--green:#3dba7a;--text:#e8eaf0;--sub:#8b90a0;--border:#2e3348;
+  --tag-food:#c97a3a;--tag-cafe:#5a9e7c;--tag-dessert:#9b6bb5;--tag-shop:#4a7cb5;
+  --radius:12px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:var(--bg);color:var(--text);font-family:'Helvetica Neue',Arial,sans-serif;min-height:100vh}
+h1{text-align:center;padding:28px 20px 6px;font-size:1.6rem;color:#fff;letter-spacing:.04em}
+.subtitle{text-align:center;color:var(--sub);font-size:.88rem;margin-bottom:18px}
 
-/* ── 補充景點（行程頁底部） ── */
-.supp-section{margin-top:32px; padding-top:24px; border-top:2px dashed var(--line-strong);}
-.supp-head{display:flex; align-items:center; gap:10px; margin-bottom:18px;}
-.supp-head h3{font-size:15px; color:var(--text); margin:0;}
-.supp-head .supp-note{font-size:11.5px; color:var(--text-dim);}
-.supp-groups{display:flex; flex-direction:column; gap:20px;}
-.supp-group{}
-.supp-group-label{display:inline-flex; align-items:center; gap:6px; font-size:11px; font-weight:700; font-family:'Space Mono',monospace; color:var(--coral-deep); letter-spacing:.08em; margin-bottom:10px; padding:3px 10px; background:rgba(240,128,90,0.10); border-radius:999px;}
-.supp-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:10px;}
-.supp-card{background:var(--surface); border:1px solid var(--line); border-radius:14px; padding:14px 16px; display:flex; gap:12px; box-shadow:0 1px 8px rgba(35,50,65,0.05);}
-.supp-card-ico{font-size:20px; line-height:1; flex-shrink:0; margin-top:1px;}
-.supp-card-body{flex:1; min-width:0;}
-.supp-card-name{font-size:13.5px; font-weight:700; color:var(--text); display:flex; align-items:center; gap:6px; flex-wrap:wrap; margin-bottom:4px;}
-.supp-card-meta{font-size:11px; color:var(--text-dim); font-family:'Space Mono',monospace; line-height:1.7; margin-bottom:5px;}
-.supp-card-desc{font-size:12.5px; color:var(--text-muted); line-height:1.75; margin:0;}
+/* VBP banner */
+.vbp-banner{
+  background:linear-gradient(135deg,#2a1a3a,#1a2a3a);
+  border:1px solid #5a3a7a;border-radius:var(--radius);
+  padding:12px 18px;margin:0 12px 20px;
+  display:flex;align-items:center;gap:12px;flex-wrap:wrap
+}
+.vbp-title{color:#d490ff;font-weight:700;font-size:.9rem}
+.vbp-info{color:var(--sub);font-size:.8rem;line-height:1.5}
+.vbp-tag{display:inline-block;background:#5a3a7a;color:#d490ff;border-radius:20px;
+  padding:2px 8px;font-size:.72rem;margin:2px 2px 0 0}
+.vbp-window{color:#f5c842;font-size:.8rem;margin-top:4px}
 
-/* 每日順路推薦區塊 */
-.day-extras{margin-top:18px; padding-top:16px; border-top:2px dashed rgba(155,100,19,0.25);}
-.day-extras-head{display:flex; align-items:center; gap:10px; margin-bottom:14px;}
-.day-extras-head .deh-label{font-size:13px; font-weight:700; color:var(--gold-deep);}
-.day-extras-head .deh-note{font-size:11.5px; color:var(--text-dim);}
+/* tabs */
+.tabs{display:flex;overflow-x:auto;gap:6px;padding:0 12px 12px;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex-shrink:0;padding:8px 14px;border-radius:20px;border:1.5px solid var(--border);
+  background:var(--card);color:var(--sub);cursor:pointer;font-size:.82rem;
+  transition:all .2s;white-space:nowrap}
+.tab.active{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
 
-/* day map container */
-.day-map{height:210px; border-radius:14px; overflow:hidden; margin-bottom:16px; border:1px solid var(--line); background:linear-gradient(160deg,#d6eaf4 0%,#e8f4f0 100%);}
-.lf-popup-inner b{font-size:13px; color:var(--text); display:block;}
-.lf-popup-inner small{font-size:11px; color:var(--text-muted); font-family:'Space Mono',monospace;}
-.lf-popup-inner .rec-tag{font-size:10px; font-weight:700; padding:1px 6px; border-radius:999px; background:linear-gradient(135deg,var(--gold),#e8b84a); color:#4A3308; margin-left:5px; vertical-align:middle;}
+/* day panel */
+.day-panel{display:none;padding:0 12px 32px}
+.day-panel.active{display:block}
+.day-header{margin-bottom:16px}
+.day-title{font-size:1.15rem;font-weight:700;color:#fff}
+.day-date{font-size:.8rem;color:var(--sub);margin-top:2px}
+
+/* map */
+.map-wrap{border-radius:var(--radius);overflow:hidden;height:220px;margin-bottom:16px;border:1px solid var(--border)}
+
+/* stop card */
+.stop-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 15px;margin-bottom:4px;position:relative}
+.stop-card.vbp-stop{border-color:#7a3aaa;background:linear-gradient(135deg,var(--card),#1e1428)}
+.stop-num{position:absolute;top:14px;left:15px;width:24px;height:24px;border-radius:50%;
+  background:var(--accent);color:#fff;font-size:.75rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center}
+.stop-num.vbp{background:var(--vbp)}
+.stop-body{padding-left:34px}
+.stop-name{font-size:.98rem;font-weight:600;color:#fff;line-height:1.3}
+.stop-kr{font-size:.77rem;color:var(--sub);margin-top:1px}
+.stop-row{display:flex;align-items:center;gap:8px;margin-top:6px;flex-wrap:wrap}
+.stop-time{font-size:.78rem;color:var(--gold);font-weight:600}
+.stop-time.pinned{color:var(--vbp);background:#2a1218;padding:2px 7px;border-radius:12px;border:1px solid var(--vbp)}
+.stop-vbp{font-size:.72rem;background:#3a1a4a;color:#d490ff;padding:2px 7px;border-radius:12px}
+.stop-note{font-size:.8rem;color:var(--sub);margin-top:5px;line-height:1.5}
+
+/* transport leg */
+.transport-leg{margin:0 0 4px 15px;padding:9px 13px;
+  background:linear-gradient(135deg,#141720,#111420);
+  border-left:2px solid #3a4060;border-radius:0 var(--radius) var(--radius) 0;font-size:.78rem}
+.transport-primary{color:#70c0f0;margin-bottom:3px}
+.transport-backup{color:#8b90a0}
+.transport-label{font-size:.7rem;font-weight:700;padding:1px 6px;border-radius:8px;margin-right:5px;vertical-align:middle}
+.lbl-pri{background:#1a3050;color:#70c0f0}
+.lbl-bak{background:#1a1f35;color:#8b90a0}
+
+/* extras */
+.extras-section{margin-top:14px}
+.extras-title{font-size:.8rem;color:var(--sub);font-weight:600;margin-bottom:8px;
+  display:flex;align-items:center;gap:6px}
+.extras-title::before{content:'';flex:1;height:1px;background:var(--border)}
+.extras-title::after{content:'';flex:1;height:1px;background:var(--border)}
+.extra-card{background:var(--card2);border:1px solid var(--border);border-radius:10px;
+  padding:11px 13px;margin-bottom:8px;display:flex;gap:10px;align-items:flex-start}
+.extra-icon{font-size:1.1rem;flex-shrink:0;margin-top:1px}
+.extra-name{font-size:.88rem;font-weight:600;color:#fff}
+.extra-kr{font-size:.72rem;color:var(--sub)}
+.extra-desc{font-size:.78rem;color:var(--sub);margin-top:4px;line-height:1.5}
+.extra-meta{display:flex;gap:8px;flex-wrap:wrap;margin-top:5px}
+.extra-meta span{font-size:.72rem;color:var(--sub)}
+
+/* todo */
+.todo-section{background:var(--card2);border:1px solid var(--border);border-radius:var(--radius);
+  padding:14px 16px;margin:0 12px 20px}
+.todo-title{font-size:.85rem;font-weight:700;color:var(--gold);margin-bottom:10px}
+.todo-item{display:flex;gap:10px;font-size:.8rem;padding:5px 0;border-bottom:1px solid var(--border)}
+.todo-item:last-child{border-bottom:none}
+.todo-item .ti{color:var(--sub);flex-shrink:0;width:65px}
+.todo-item .tc{color:var(--text);line-height:1.4}
+
+/* legend */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:14px;font-size:.77rem}
+.leg-item{display:flex;align-items:center;gap:5px;color:var(--sub)}
+.leg-dot{width:12px;height:12px;border-radius:50%}
+
+@media(min-width:600px){
+  .day-panel{padding:0 20px 32px}
+  .tabs{padding:0 20px 12px}
+  .vbp-banner,.todo-section{margin-left:20px;margin-right:20px}
+}
 </style>
 </head>
 <body>
-<div class="wrap">
 
-  <div class="masthead">
-    <div class="eyebrow">Busan Winter Trip · 2026.12.02 – 12.07</div>
-    <h1>釜山冬日 <span class="accent">6 天 5 夜</span> 自由行完全手冊</h1>
-    <p class="sub">住宿基地：海雲臺尾浦海景民宿 ｜ 去回程航班 + 完整行程 + Naver Map 韓文對照</p>
-    <div class="sunbar"></div>
-  </div>
+<h1>🌊 釜山冬日六日遊</h1>
+<p class="subtitle">2026年 12/02–12/07 ✦ VBP 48小時 (12/03 四 21:00 啟動) ✦ 天空膠囊 12/04 五 16:30</p>
 
-  <div class="top-tabs" id="topTabs">
-    <div class="top-tab active" data-page="flights"><span class="n">01</span>航班住宿</div>
-    <div class="top-tab" data-page="itinerary"><span class="n">02</span>行程表</div>
-    <div class="top-tab" data-page="guide"><span class="n">03</span>生活指南</div>
-    <div class="top-tab" data-page="checklist"><span class="n">04</span>清單</div>
-  </div>
-
-  <div class="page active" id="page-flights">
-    <div class="section-head">
-      <h2>航班與住宿</h2>
-      <p>去回程機票時間，與此行唯一住宿基地。</p>
-    </div>
-    <div class="passes">
-      <div class="pass">
-        <div class="pass-main">
-          <div class="dir">去程・12/02（三）</div>
-          <div class="route">TPE <span>→</span> PUS</div>
-          <div class="times">12:15 桃園 T1 起飛 → 15:45 金海機場 落地</div>
-          <div class="note">建議 09:45 前抵達 T1 辦理報到託運；無機上餐點，請先備輕食。</div>
-        </div>
-        <div class="pass-stub">
-          <div class="airline">濟州航空</div>
-          <div class="flightno">7C6152</div>
-          <div class="date">2026.12.02</div>
-        </div>
-      </div>
-      <div class="pass">
-        <div class="pass-main">
-          <div class="dir">回程・12/07（一）</div>
-          <div class="route">PUS <span>→</span> TPE</div>
-          <div class="times">20:50 金海機場 起飛 → 22:30 桃園 T1 落地</div>
-          <div class="note">晚班機超充實！17:30 由西面搭計程車赴機場，18:20 辦理託運退稅。</div>
-        </div>
-        <div class="pass-stub">
-          <div class="airline">台灣虎航</div>
-          <div class="flightno">IT607</div>
-          <div class="date">2026.12.07</div>
-        </div>
-      </div>
-    </div>
-
-    <div class="stay-card">
-      <div class="name">海雲臺尾浦海景民宿</div>
-      <div class="meta">住宿基地・12/02 – 12/07 全程 5 晚 ｜ 位於해운대 미포，鄰近 BUSAN X the SKY 與海雲臺海岸列車尾浦站</div>
-      <div style="margin-top:12px; display:flex; gap:10px; flex-wrap:wrap;">
-        <a href="https://www.airbnb.com.tw/rooms/1122384695234548236?adults=2&check_in=2026-12-02&check_out=2026-12-07" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:rgba(240,128,90,0.12); border:1px solid rgba(240,128,90,0.35); border-radius:10px; font-size:13px; color:var(--coral-deep); text-decoration:none; font-weight:700;">🏠 Airbnb 訂房頁面 → 12/02–12/07・2 人</a>
-        <a href="https://map.naver.com/v5/search/해운대 미포" target="_blank" rel="noopener" style="display:inline-flex; align-items:center; gap:6px; padding:8px 14px; background:rgba(42,162,152,0.10); border:1px solid rgba(42,162,152,0.30); border-radius:10px; font-size:13px; color:var(--teal-deep); text-decoration:none; font-weight:700;">📍 海雲臺尾浦 Naver Map</a>
-      </div>
+<div class="vbp-banner">
+  <div>
+    <div class="vbp-title">🎫 Visit Busan Pass 48小時</div>
+    <div class="vbp-window">⏰ 生效：12/03 (四) 21:00 — 스파랜드 首次掃碼 → 失效：12/05 (六) 21:00</div>
+    <div class="vbp-info" style="margin-top:5px">涵蓋景點：
+      <span class="vbp-tag">롯데월드</span>
+      <span class="vbp-tag">스파랜드</span>
+      <span class="vbp-tag">엑스더스카이</span>
+      <span class="vbp-tag">해변열차</span>
+      <span class="vbp-tag">다이아몬드베이 요트</span>
+      <span class="vbp-tag">시티투어버스</span>
+      <span class="vbp-tag">아르떼뮤지엄</span>
     </div>
   </div>
-
-  <div class="page" id="page-itinerary">
-    <div class="rail-outer">
-      <div class="rail" id="dayRail"><div class="rail-line"></div></div>
-    </div>
-    <div id="dayPanels"></div>
-  </div>
-
-  <div class="page" id="page-guide">
-    <div class="section-head">
-      <h2>實用生活指南</h2>
-      <p>咖啡・拍貼機・潮牌速查表，Naver Map 搜尋名稱皆已標註韓文。</p>
-    </div>
-    <div id="guideContent"></div>
-  </div>
-
-  <div class="page" id="page-checklist">
-    <div class="section-head">
-      <h2>清單</h2>
-      <p>行前搶票提醒、與打包建議清單，點一下打勾即可（僅本次瀏覽記錄，不會保存）。</p>
-    </div>
-    <div class="alerts" style="margin-bottom:18px;">
-      <div class="alert">
-        <div class="ico">⏰</div>
-        <div class="body">
-          <div class="title">膠囊列車搶票鬧鐘 <span class="tag-inline">Sunset Magic Hour</span></div>
-          <p>正確搶票時間：<b style="color:var(--text)">2026/11/03（二）台灣 06:00</b>（韓國 07:00）</p>
-          <p>官網預約路線：青沙浦 청사포 → 尾浦 미포 ｜ 鎖定乘車班次：12/04（五）16:30 或 17:00（迎夕陽與天際線）</p>
-          <div class="cd">倒數：<b id="cd-ticket">—</b></div>
-        </div>
-      </div>
-      <div class="alert teal">
-        <div class="ico">🎟️</div>
-        <div class="body">
-          <div class="title">Visit Busan Pass（VBP）推薦</div>
-          <p><b style="color:var(--text)">最優推薦：24 小時券 55,000 韓元</b> — 4 大付費景點集中於 Day2 13:30 ～ Day3 13:00 完成開卡與兌換，原價 109,000 韓元現省近 50%！</p>
-          <p>備選推薦：48 小時券 85,000 韓元，時效整整 2 天無壓力漫遊。</p>
-        </div>
-      </div>
-    </div>
-
-    <div class="check-card">
-      <h3>✅ 行前待辦</h3>
-      <div id="todoList"></div>
-    </div>
-
-    <div class="check-card">
-      <h3>🧳 打包建議清單</h3>
-      <div class="disclaimer">手冊原文沒有列出打包清單，以下是依 12 月釜山天氣（均溫約 2–9°C）整理的建議項目，可依需求自行增刪。</div>
-      <div id="packList"></div>
-    </div>
-  </div>
-
-  <footer>釜山 6 天 5 夜 自由行手冊 ｜ 2026/12/02 – 12/07</footer>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+<div class="todo-section">
+  <div class="todo-title">📋 行前待辦</div>
+  <div class="todo-item"><span class="ti">台灣 06:00</span><span class="tc">⏰ 開搶天空膠囊 12/04 (五) 16:30 班次（韓國 07:00 整點開賣）→ <a href="https://www.haevangjeong.com" style="color:var(--accent)">haevangjeong.com</a></span></div>
+  <div class="todo-item"><span class="ti">出發前</span><span class="tc">📱 下載 Visit Busan Pass App。VBP 首次掃碼地點：12/03 (四) 晚上 21:00 스파랜드 11F 入口。⚠️ 在此之前不可在任何其他 VBP 景點掃碼！</span></div>
+  <div class="todo-item"><span class="ti">出發前</span><span class="tc">🎨 아르떼뮤지엄 부산 12/05（六）週六人多，建議提前至官網或 Naver 預約時間段（選時段免費），避免現場久候</span></div>
+  <div class="todo-item"><span class="ti">出發前</span><span class="tc">⛵ 다이아몬드베이 야간 요트 12/05（六）20:30 班次，提前確認是否需要預訂（VBP 兌換需當天 20:00 前到碼頭現場換票）</span></div>
+  <div class="todo-item"><span class="ti">出發前</span><span class="tc">🚌 시티투어버스 그린라인 12/05（六）09:30 부산역 出發，建議 09:15 前到，VBP 上車掃碼免費搭乘</span></div>
+</div>
+
+<div class="tabs" id="tabs"></div>
+<div id="panels"></div>
+
 <script>
-const TAG_META = {
-  food:{cls:'tag-food',label:'在地美食'}, vbp:{cls:'tag-vbp',label:'VBP 免費兌換'},
-  photo:{cls:'tag-photo',label:'拍貼機'}, season:{cls:'tag-season',label:'冬季限定'},
-  sunset:{cls:'tag-sunset',label:'絕美夕陽'}, sat:{cls:'tag-sat',label:'週六限定'},
-  kdrama:{cls:'tag-kdrama',label:'韓劇聖地'}, coffee:{cls:'tag-coffee',label:'每日冰美式'},
-  culture:{cls:'tag-culture',label:'文青商圈'}
-};
-
-const days = [
-{id:'d1', label:'Day 1', date:'12/02（三）',
-  theme:'7C6152 抵達 → 海雲臺 Check-in → 燈光節', themeSub:'15:45 落地 → 海邊落腳 & 初探燈節',
-  items:[
-    {time:'15:45', title:'班機降落金海國際機場', kr:'김해국제공항', desc:'辦理入境審查、提領行李出關。', tags:[]},
-    {time:'16:45～17:45', title:'搭計程車前往民宿', desc:'約 45～60 分鐘，車資約 32,000 韓元，直達海雲臺尾浦 해운대 미포 民宿 Check-in。', tags:[]},
-    {time:'18:30', title:'漫步海雲臺大街龜南路', kr:'구남로', desc:'買今日第一杯 Compose 冰美式，並拍 Photoism 拍貼機。', tags:['coffee','photo']},
-    {time:'19:00', title:'晚餐時間', desc:'「伍班長烤肉 오반장」或「海雲臺盲鰻一條街 해운대 꼼장어」。', tags:['food']},
-    {time:'20:30', title:'海雲臺光之慶典', kr:'해운대 빛축제', desc:'漫步海雲臺海水浴場 해운대해수욕장，欣賞巨型藍色燈海隧道。', tags:['season']}
-  ],
-  tip:'<b>Photoism Box 海雲臺店</b> 포토이즘박스 해운대점 ｜ <b>海雲臺旅遊諮詢處</b> 해운대관광안내소 可買海鷗 Boogi 부기 官方鑰匙圈。'
-},
-{id:'d2', label:'Day 2', date:'12/03（四）',
-  theme:'海東龍宮寺 → 樂天世界 → Spa Land → 百貨潮牌', themeSub:'東釜山樂園 & 溫泉購物（VBP 開卡日）',
-  items:[
-    {time:'09:00', title:'海東龍宮寺', kr:'해동용궁사', desc:'外帶 Mega 冰美式，搭車直達參拜斷崖古剎。', tags:['coffee']},
-    {time:'12:00', title:'機張市場午餐', kr:'기장시장', desc:'順遊機張市場品嚐「機張松葉蟹大餐」，或至 Outlet 享用熱湯飯。', tags:['food']},
-    {time:'13:30', title:'VBP 正式開卡：釜山樂天世界 Adventure', kr:'롯데월드 어드벤처 부산', desc:'暢玩樂天世界，打卡城堡與雲霄飛車。', tags:['vbp']},
-    {time:'18:30', title:'新世界百貨 Spa Land 汗蒸幕', kr:'스파랜드 센텀시티', desc:'免費兌換 4 小時，享受天然溫泉暖房。', tags:['vbp']}
-  ],
-  tip:'順路導航（新世界百貨 Centum City 店 신세계백화점 센텀시티점，與 Spa Land 同棟）：<br><b>COVERNAT</b> 커버낫 — 韓系工裝始祖，必收「C」刺繡落肩衛衣與工裝外套。<br><b>thisisneverthat</b> 디스이즈네버댓 — 韓國 Supreme，推薦 Logo 帽 T 與工裝褲。<br><b>What it isNt (Mark Gonzales)</b> 와릿이즌 — 黃色小天使塗鴉，推薦厚磅針織外套。<br><b>GENTLE MONSTER</b> 젠틀몬스터 — 亞洲臉型墨鏡首選，退稅比台灣便宜 NT$1,500+。'
-},
-{id:'d3', label:'Day 3', date:'12/04（五）',
-  theme:'X the SKY → 海理團路 → 松亭 → 膠囊列車夕陽', themeSub:'摩天海景 → 藝文選物 → 夕陽絕景',
-  items:[
-    {time:'09:30', title:'BUSAN X the SKY 100 樓', kr:'부산엑스더스카이', desc:'外帶 Paik\'s 冰美式，登上住宿旁摩天觀景台，免費兌換，俯瞰蔚藍海景與打卡全球最高星巴克。', tags:['coffee','vbp']},
-    {time:'11:00', title:'海理團路', kr:'해리단길', desc:'散步前往，逛獨立文創選品店並品嚐人氣早午餐。', tags:['culture']},
-    {time:'13:00', title:'VBP 24H 截止前兌換：海雲臺海岸列車', kr:'해운대해변열차', desc:'在尾浦站兌換 2 次券，搭車直達「松亭站 송정역」吃松亭 3 代熱狗 송정3대핫도그。', tags:['vbp']},
-    {time:'14:30', title:'青沙浦踏石展望台', kr:'청사포 다릿돌전망대', desc:'走透明玻璃步道，漫步至青沙浦雙子燈塔 청사포 쌍둥이등대，在海景咖啡廳放空。', tags:[]},
-    {time:'16:30', title:'重頭戲・夕陽黃金時段', kr:'스카이캡슐（青沙浦 → 尾浦）', desc:'搭乘預約的天空膠囊列車，欣賞粉紫色落日與天際線。', tags:['sunset']},
-    {time:'18:00', title:'晚餐暖胃', desc:'回到尾浦站，步行享用「極東生鱈魚湯 극동돼지국밥 / 극동생대구탕」。', tags:['food']}
-  ],
-  tip:'<b>BUSAN BADA SAND</b> 부산바다샌드（海理團路本店，招牌焦糖蜂蜜奶油夾心餅）｜ 青沙浦站禮品店可買膠囊列車限定海鷗 Boogi 徽章。'
-},
-{id:'d4', label:'Day 4', date:'12/05（六）',
-  theme:'甘川洞 → 札嘎其市場 → 南浦洞 → 無人機秀', themeSub:'西釜山文化 & 週六限定活動',
-  items:[
-    {time:'09:00', title:'甘川洞文化村', kr:'감천문화마을', desc:'外帶 Paik\'s 冰美式前往西釜山，探訪彩色積木屋與小王子合影。', tags:['coffee']},
-    {time:'12:00', title:'札嘎其海鮮市場', kr:'자갈치시장', desc:'品嚐現撈海鮮，並在對面 BIFF 廣場 BIFF 광장 吃元祖黑糖餅 씨앗호떡。', tags:['food']},
-    {time:'14:30', title:'白淺灘文化村', kr:'흰여울문화마을', desc:'漫步影島海景步道，打卡海景拍貼機。', tags:['photo']},
-    {time:'17:30', title:'釜山聖誕樹文化節', kr:'부산 크리스마스트리 문화축제', desc:'前往南浦洞光復路 광복로패션거리，欣賞巨型聖誕樹。', tags:['season']},
-    {time:'20:00', title:'廣安里 M 無人機秀', kr:'광안리 M 드론라이트쇼', desc:'搭車至廣安里海水浴場，觀賞週六限定 500+ 架光影秀。', tags:['sat']}
-  ],
-  tip:'<b>甘川洞手翻相簿</b> 움직이는사진상점（Flip Book 錄 8 秒動態小書）｜ <b>GENTLE MONSTER 光復旗艦店</b> 젠틀몬스터 부산광복플래그십스토어 ｜ <b>Blue Elephant 南浦店</b> 블루엘리펀트 남포점。'
-},
-{id:'d5', label:'Day 5', date:'12/06（日）',
-  theme:'冬柏島散步 → 廣安里海景咖啡 → 虎川村《三流之路》夜景', themeSub:'海景漫遊 & 韓劇聖地巡禮',
-  items:[
-    {time:'10:00', title:'冬柏島 APEC 世峰樓', kr:'동백섬 누리마루 APEC하우스', desc:'外帶 Compose 冰美式，漫步至此看美人魚像與海景。', tags:['coffee']},
-    {time:'12:30', title:'廣安里海鮮鍋', desc:'享用鮮美海鮮鍋，在廣安大橋 광안대교 第一排海景咖啡廳品嚐甜點放空。', tags:['food']},
-    {time:'15:30', title:'寄放行李', desc:'前往西面站 서면역 飯店或地鐵置物櫃放行李。', tags:[]},
-    {time:'17:30', title:'韓劇同款夜景：虎川村南日 Bar', kr:'호천마을 남일바 / 호천문화플랫폼', desc:'搭 87 號公車前往《三流之路》拍攝地，在天台拍萬家燈火劇照。', tags:['kdrama']},
-    {time:'晚餐', title:'西面商圈宵夜', desc:'回到西面商圈享用「味贊王鹽烤肉 맛찬들왕소금구이 서면점」或外送炸雞配啤酒。', tags:['food']}
-  ], tip:''
-},
-{id:'d6', label:'Day 6', date:'12/07（一）',
-  theme:'西面商圈 → 田浦文青街 → 超市大掃貨 → IT607 返台', themeSub:'潮流文創 → 伴手禮滿載 → IT607 晚班機（20:50 起飛）',
-  items:[
-    {time:'10:00', title:'寄放行李', desc:'退房後搭車至西面站 서면역 寄放行李，外帶 Mega 冰美式。', tags:['coffee']},
-    {time:'10:30', title:'松亭三代豬肉湯飯', kr:'송정3대국밥', desc:'早午餐享用西面名店暖胃。', tags:['food']},
-    {time:'12:00', title:'田浦文青選物 & 潮流巡禮', desc:'逛田浦咖啡街 전포카페거리 文創店：made by 메이드바이 전포（手機支架）、Object 田浦店 오브젝트 전포점（Dinotaeng 短尾矮袋鼠）、poset 포셋 전포（明信片專賣）；體驗最新潮的 DON\'T LXXK UP 西面店 돈룩업 서면점 俯角拍貼機；逛西面 Mark Gonzales（What it isNt）西面店 와릿이즌 서면점 補買街頭潮服。', tags:['photo','culture']},
-    {time:'15:30', title:'伴手禮大掃貨', desc:'前往西面樂天百貨 B1 樂天超市 롯데마트 부산점 或大型 E-Mart 이마트 문현점 採買伴手禮並裝箱。', tags:[]},
-    {time:'17:30', title:'取回行李，搭車赴機場', desc:'在西面站前搭乘計程車直達金海國際機場國際線 김해국제공항 국제선（車程約 35 分鐘）。', tags:[]},
-    {time:'18:20', title:'辦理報到託運', desc:'抵達金海機場，辦理虎航 IT607 報到託運（起飛前 2.5 小時開櫃）、退稅、過安檢。', tags:[]},
-    {time:'20:50', title:'IT607 起飛', desc:'22:30 平安抵達桃園國際機場 T1！', tags:[]}
-  ], tip:''
-}
-];
-
-const guides = {
-  coffee:[
-    {name:'Compose Coffee 컴포즈커피', note:'海雲臺店 07:30 起營業。'},
-    {name:'Mega Coffee 메가커피', note:'招牌黃色標誌，大容量約 2,000 韓元。'},
-    {name:'Paik\'s Coffee 빽다방', note:'白鍾元碎冰。點餐：「阿阿 珠賽優」'}
-  ],
-  photo:[
-    {name:'DON\'T LXXK UP 돈룩업', note:'最紅俯角／仰角街頭風（西面田浦／南浦）。'},
-    {name:'Haru Film 하루필름', note:'自帶冷白皮美肌濾鏡，質感首選。'},
-    {name:'Photoism 포토이즘', note:'簡約大氣黑白底，海雲臺大街即有店面。'}
-  ],
-  brands:[
-    {name:'COVERNAT', kr:'커버낫', style:'韓國工裝潮流始祖，版型立體俐落，耐洗耐穿。', buy:'經典「C」字刺繡落肩衛衣、防潑水工裝夾克、厚磅帆布包。'},
-    {name:'thisisneverthat', kr:'디스이즈네버댓', style:'被譽為「韓國 Supreme」，硬派美式滑板工裝風格。', buy:'大 Logo 厚磅帽 T、復古水洗老帽、寬版工裝休閒長褲。'},
-    {name:'What it isNt', kr:'와릿이즌', style:'標誌性黃色「小天使／小飛人塗鴉」，街頭休閒隨性。', buy:'小飛人刺繡厚磅針織開襟衫、重磅落肩長袖衛衣。'},
-    {name:'GENTLE MONSTER', kr:'젠틀몬스터', style:'韓國墨鏡天花板，亞洲臉型專屬，退稅省 NT$1,500+。', buy:'Lang／Frida／Her 經典百搭俐落黑框墨鏡。'},
-    {name:'made by & Object', kr:'메이드바이／오브젝트', style:'田浦人氣文創選物店，聚集全韓頂尖獨立插畫家。', buy:'造型手機支架、Dinotaeng 短尾矮袋鼠周邊、設計明信片。'},
-    {name:'BUSAN BADA SAND', kr:'부산바다샌드', style:'海雲臺海理團路限定名產，法式純奶油佐焦糖蜂蜜。', buy:'蜂蜜焦糖奶油夾心餅（盒裝高質感，送禮自用首選）。'}
-  ]
-};
-
 const COORDS = {
-  '김해국제공항':[35.1796,128.938],
-  '구남로':[35.161,129.160],
+  '김해국제공항':[35.1796,128.9380],
+  '구남로':[35.1610,129.1600],
   '해운대 빛축제':[35.1588,129.1603],
-  '해동용궁사':[35.1883,129.2233],       // ✅ 35°11′18″N 129°13′24″E (Wikipedia)
+  '해동용궁사':[35.1883,129.2233],
   '기장시장':[35.2452,129.2194],
-  '롯데월드 어드벤처 부산':[35.2045,129.2067],  // ✅ 기장읍 동부산관광로 42, 오시리아 단지
+  '롯데월드 어드벤처 부산':[35.2045,129.2067],
   '스파랜드 센텀시티':[35.1726,129.1269],
-  '부산엑스더스카이':[35.1603,129.1690],  // ✅ LCT 해운대구 중동 (35°09′37″N 129°10′08″E)
+  '부산엑스더스카이':[35.1603,129.1690],
   '해리단길':[35.1576,129.1568],
-  '해운대해변열차':[35.1618,129.1953],
+  '해운대해변열차（尾浦→青沙浦）':[35.1618,129.1953],
   '청사포 다릿돌전망대':[35.1701,129.2056],
-  '스카이캡슐（青沙浦 → 尾浦）':[35.168,129.195],
-  '감천문화마을':[35.0970,129.0089],     // ✅ 35°05′49″N 129°00′32″E (Wikipedia)
-  '자갈치시장':[35.0966,129.0306],       // ✅ Google Maps 35.0966394,129.0305933
-  '흰여울문화마을':[35.0773,129.0464],    // ✅ mapY=35.0773, mapX=129.0464 (Korea Trip Tips)
+  '스카이캡슐（青沙浦→尾浦）':[35.1680,129.1950],
+  '다이아몬드베이 요트':[35.0995,129.1250],
+  '부산역（시티투어버스 그린라인）':[35.1148,129.0426],
+  '흰여울문화마을':[35.0773,129.0464],
+  '아르떼뮤지엄 부산':[35.0860,129.0620],
+  '감천문화마을':[35.0970,129.0089],
+  '자갈치시장':[35.0966,129.0306],
   '부산 크리스마스트리 문화축제':[35.1003,129.0252],
-  '광안리 M 드론라이트쇼':[35.1534,129.1186],
-  '동백섬 누리마루 APEC하우스':[35.1527,129.1584],  // 동백섬 남단 APEC 하우스
+  '동백섬 누리마루 APEC하우스':[35.1527,129.1584],
   '호천마을 남일바 / 호천문화플랫폼':[35.1487,129.0553],
+  '광안리 M 드론라이트쇼':[35.1534,129.1186],
   '서면역':[35.1577,129.0598],
   '송정3대국밥':[35.1577,129.0615],
-  // 順路推薦 좌표
-  '호랑이젤라떡 해운대본점':[35.1631,129.1962], // 달맞이길62번길 38 (미포 산복도로)
-  '병천순대국밥 해운대점':[35.1874,129.1983],  // 좌동 대천로 108 (신해운대역 인근)
-  '리베르타 청사포점':[35.1713,129.2061],      // 청사포로 137
-  '노스페이스 광복직영점':[35.0988,129.0296],  // 광복로 일대
-  '올리브영 남포점':[35.0993,129.0271],        // 광복로 64-1
-  '설야멱 부산서면직영점':[35.1572,129.0604],  // 서전로 27
-  '안목 서면점':[35.1578,129.0617],            // 서면로 10
-  '워너비 서면점':[35.1543,129.0621],          // 동천로 63
-  '롯데 프리미엄 아울렛 동부산점':[35.2048,129.2078], // 오시리아, 롯데월드 동일 단지
-  '달맞이 카페거리':[35.1570,129.1680],        // 달맞이길 일대 (동백섬~미포 중간 산복)
-  '이재모피자 광안점':[35.1548,129.1168],      // 광안리해수욕장 인근
+  '호랑이젤라떡 해운대본점':[35.1631,129.1962],
+  '병천순대국밥 해운대점':[35.1874,129.1983],
+  '리베르타 청사포점':[35.1713,129.2061],
+  '노스페이스 광복직영점':[35.0988,129.0296],
+  '올리브영 남포점':[35.0993,129.0271],
+  '설야멱 부산서면직영점':[35.1572,129.0604],
+  '안목 서면점':[35.1578,129.0617],
+  '워너비 서면점':[35.1543,129.0621],
+  '롯데 프리미엄 아울렛 동부산점':[35.2048,129.2078],
+  '달맞이 카페거리':[35.1570,129.1680],
+  '이재모피자 광안점':[35.1548,129.1168],
+  '오륙도 스카이워크':[35.0836,129.1253],
 };
 
-function mapIcon(n, isExtra){
-  const c = isExtra ? '#9B6413' : '#F0805A';
-  const html = `<div style="width:26px;height:26px;border-radius:50%;background:${c};color:#fff;font-size:11px;font-weight:700;display:flex;align-items:center;justify-content:center;font-family:monospace;border:2px solid rgba(255,255,255,0.9);box-shadow:0 2px 8px rgba(0,0,0,0.35)">${n}</div>`;
-  return L.divIcon({className:'',html,iconSize:[26,26],iconAnchor:[13,13],popupAnchor:[0,-15]});
-}
-
-function renderDayMap(day){
-  const mainStops = day.items.filter(it => it.kr && COORDS[it.kr]);
-  const extStops  = (day.extras||[]).filter(it => it.kr && COORDS[it.kr]);
-  if(mainStops.length + extStops.length < 1) return '';
-  return `<div id="map-${day.id}" class="day-map"></div>`;
-}
-
-const leafletMaps = {};
-const dayBoundsStore = {};
-
-function fitDayMapBounds(dayId){
-  const map = leafletMaps[dayId], b = dayBoundsStore[dayId];
-  if(!map || !b || !b.length) return;
-  if(b.length===1) map.setView(b[0],15);
-  else map.fitBounds(b,{padding:[22,22]});
-}
-
-function initDayMap(day){
-  const el = document.getElementById('map-'+day.id);
-  if(!el || leafletMaps[day.id]) return;
-  const map = L.map(el,{zoomControl:true,scrollWheelZoom:false,tap:false,attributionControl:false});
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{maxZoom:18}).addTo(map);
-  L.control.attribution({prefix:false}).addTo(map);
-  const bounds=[];
-  const mainStops = day.items.filter(it=>it.kr&&COORDS[it.kr]);
-  const extStops  = (day.extras||[]).filter(it=>it.kr&&COORDS[it.kr]);
-  mainStops.forEach((it,i)=>{
-    const c=COORDS[it.kr]; bounds.push(c);
-    L.marker(c,{icon:mapIcon(i+1,false)})
-     .bindPopup(`<div class="lf-popup-inner"><b>${it.title}</b><small>${it.kr}</small></div>`)
-     .addTo(map);
-  });
-  extStops.forEach(it=>{
-    const c=COORDS[it.kr]; bounds.push(c);
-    L.marker(c,{icon:mapIcon('★',true)})
-     .bindPopup(`<div class="lf-popup-inner"><b>${it.name}<span class="rec-tag">順路</span></b><small>${it.kr}${it.hours?' ⏰ '+it.hours:''}</small></div>`)
-     .addTo(map);
-  });
-  dayBoundsStore[day.id] = bounds;
-  leafletMaps[day.id] = map;
-  fitDayMapBounds(day.id); // first attempt (may be off before invalidateSize)
-}
+const CATEG_META = {
+  food:{icon:'🍜',color:'var(--tag-food)'},
+  cafe:{icon:'☕',color:'var(--tag-cafe)'},
+  dessert:{icon:'🧁',color:'var(--tag-dessert)'},
+  shop:{icon:'🛍',color:'var(--tag-shop)'},
+};
 
 const EXTRAS = {
   d2:[
-    {name:'竝川血腸湯飯 海雲臺店', kr:'병천순대국밥 해운대점', categ:'food',
-     desc:'正宗忠清道式血腸湯飯，湯底濃郁清甜，份量扎實。位於佐洞，介於海東龍宮寺往기장방向動線上，09:00 即可當早餐。',
-     hours:'09:00–23:00', addr:'대천로 108（좌동）'},
-    {name:'樂天 Premium Outlet 東釜山店', kr:'롯데 프리미엄 아울렛 동부산점', categ:'shop',
-     desc:'與樂天世界同一오시리아 園區，暢玩主題樂園後步行直達。韓國品牌、運動品牌、戶外品牌齊全，折扣力道大可退稅，逛完再去 Spa Land 剛剛好。',
-     hours:'10:30–21:00（週末至 21:30）', addr:'동부산관광로 42（오시리아）'},
+    {name:'竝川血腸湯飯 海雲臺店',kr:'병천순대국밥 해운대점',categ:'food',
+     desc:'正宗忠清道式血腸湯飯，位於좌동，往기장方向動線上，09:00 開始，可當早餐或午餐前補充。',
+     hours:'09:00–23:00',addr:'대천로 108（좌동）'},
   ],
   d3:[
-    {name:'老虎冰淇淋大福', kr:'호랑이젤라떡 해운대본점', categ:'dessert',
-     desc:'義式冰淇淋包入彈牙麻糬，外層裹抹茶或草莓粉。位於尾浦達摩路山腰，搭海岸列車或膠囊列車回到尾浦站後上山品嚐最合適，常賣完提早打烊。',
-     hours:'12:00–21:30（賣完打烊，中場休息 16:00–17:30）', addr:'달맞이길62번길 38'},
-    {name:'Libertà 青沙浦店', kr:'리베르타 청사포점', categ:'cafe',
-     desc:'三層清水模海景咖啡廳，招牌甜筒咖啡搭現烤麵包，面海座位一位難求。19:30 關門，膠囊列車前順路安排更合適。',
-     hours:'09:00–19:30（最終點餐 19:00）', addr:'청사포로 137'},
+    {name:'老虎冰淇淋大福',kr:'호랑이젤라떡 해운대본점',categ:'dessert',
+     desc:'달맞이길 山腰的人氣冰淇淋大福，膠囊列車抵達尾浦後步行上山品嚐最合適，注意中場休息 16:00–17:30。',
+     hours:'12:00–21:30（賣完打烊，16:00–17:30 中場休息）',addr:'달맞이길62번길 38'},
+    {name:'Libertà 青沙浦店',kr:'리베르타 청사포점',categ:'cafe',
+     desc:'青沙浦海景咖啡廳，乘搭해변열차到청사포站後步行可達，趁等候膠囊列車時順路。',
+     hours:'09:00–19:30（最終點餐 19:00）',addr:'청사포로 137'},
   ],
   d4:[
-    {name:'The North Face 光復直營店', kr:'노스페이스 광복직영점', categ:'shop',
-     desc:'釜山光復路旗艦直營店，韓國限定款及聯名款在這找，退稅後比台灣便宜 20%+ 以上，광복로掃貨必停。',
-     hours:'約 11:00–21:00', addr:'광복로 일대'},
-    {name:'Olive Young 南浦店', kr:'올리브영 남포점', categ:'shop',
-     desc:'韓國最大藥妝連鎖，氣墊、防曬、面膜、DR.JART+ 一次掃齊，集點可換贈品，광복로동선上直接順路。',
-     hours:'10:00–22:30', addr:'광복로 64-1'},
+    {name:'五六島天空步道',kr:'오륙도 스카이워크',categ:'cafe',
+     desc:'城市觀光巴士綠線可在此下車，懸崖邊玻璃步道，俯瞰釜山南海岸，約遊覽 20–30 分鐘後搭下班綠線繼續前往자갈치。建議行有餘力再安排。',
+     hours:'09:00–18:00（最終入場 17:30）',addr:'용호동 산186-27（남구）'},
   ],
   d5:[
-    {name:'達摩路咖啡街', kr:'달맞이 카페거리', categ:'cafe',
-     desc:'冬柏島旁山腰的海景咖啡一條街，北歐木屋風情，俯瞰尾浦港灣與廣安大橋，早上漫步完冬柏島往山上走即到，是拍藍天大海的絕佳角度。',
-     hours:'各店約 10:00–20:00', addr:'달맞이길 일대（해운대구 중동）'},
-    {name:'이재모피자 廣安店', kr:'이재모피자 광안점', categ:'food',
-     desc:'釜山在地人氣薄皮披薩，特色在紙杯裝起司醬，廣安里海灘步行即到，食材新鮮份量大，釜山人口耳相傳的隱藏午餐首選。',
-     hours:'11:00–22:00', addr:'광안리해수욕장 인근'},
+    {name:'The North Face 光復直營店',kr:'노스페이스 광복직영점',categ:'shop',
+     desc:'南浦光復路旗艦直營店，聖誕樹節慶結束後順路逛，冬季羽絨、機能外套齊全。',
+     hours:'10:00–21:00',addr:'광복로 77（광복동）'},
+    {name:'Olive Young 南浦店',kr:'올리브영 남포점',categ:'shop',
+     desc:'南浦最大規模 Olive Young，採購護膚品、零食最方便，光復路聖誕節慶區域內。',
+     hours:'10:00–22:00',addr:'광복로 54（남포동）'},
   ],
   d6:[
-    {name:'雪夜覓 서면직영점', kr:'설야멱 부산서면직영점', categ:'food',
-     desc:'熟成豬頸肉烤肉名店，搭新鮮水芹菜包肉一口吃，肉質鮮嫩不油膩，西面宵夜首選。注意平日下午四點才開門。',
-     hours:'平日 16:00–00:30 ／ 週末 11:30–00:30', addr:'서전로 27 2층'},
-    {name:'安木豬肉湯飯 서면점', kr:'안목 서면점', categ:'food',
-     desc:'釜山在地人氣豬肉湯飯，湯底清甜骨感十足，適合 Day 6 退房後早午餐暖胃再掃貨出發。',
-     hours:'平日 10:00–22:00（LO 21:00）／ 週末 09:00–21:00（LO 20:00）', addr:'서면로 10 1층'},
-    {name:'Wannabe 서면점', kr:'워너비 서면점', categ:'shop',
-     desc:'韓國都市休閒品牌，男女裝、包包、帽子選擇多，版型寬鬆舒適，價位合理，可退稅，西面掃貨必逛。',
-     hours:'10:30–22:30', addr:'동천로 63 승광빌딩'},
+    {name:'雪夜覓 西面店',kr:'설야멱 부산서면직영점',categ:'food',
+     desc:'人氣烤豬五花直營店，肉質厚實，서면 歸國前的最後一頓韓國烤肉。',
+     hours:'11:00–22:00',addr:'서면로68번길（서면）'},
+    {name:'安木豬肉湯飯 西面店',kr:'안목 서면점',categ:'food',
+     desc:'在地人氣豬肉湯飯，早餐或午餐皆宜，平價扎實，西面購物前先暖胃。',
+     hours:'07:00–21:00',addr:'서면로 71（서면）'},
+    {name:'Wannabe 西面店',kr:'워너비 서면점',categ:'shop',
+     desc:'韓國設計師品牌集合店，서면 購物街上的潮流精選。',
+     hours:'12:00–22:00',addr:'서면로 68（서면）'},
   ],
 };
-days.forEach(d => { d.extras = EXTRAS[d.id] || []; });
 
-const todos = [
-  '2026/11/03（二）台灣 06:00 準時搶膠囊列車票（青沙浦→尾浦，鎖定 16:30 或 17:00）',
-  '確認／購買 Visit Busan Pass 24 小時券',
-  'Day2 13:30 記得正式開卡',
-  'Day3 13:00 前完成所有 VBP 兌換項目',
-  '出發前準備韓元現金與可海外提款信用卡',
-  '下載 Naver Map、Papago、Kakao Taxi App'
+// Transport leg helper: show between stops
+// t.primary, t.backup
+const days = [
+  {
+    id:'d1',label:'Day 1',date:'12/02 (三)',title:'抵達 · 海雲臺初夜',
+    stops:[
+      {name:'김해국제공항',zh:'金海國際機場',time:'午後抵達',
+       note:'取行李、換SIM卡、T-Money交通卡，兌換韓圜。',
+       transport:{
+         primary:'🚌 공항버스 307번 → 해운대（約 50 分，₩3,000）│ 或計程車（約 40 分，₩35,000–40,000）',
+         backup:'🚇 부산김해경전철 → 사상역 → 地鐵 2호선 → 해운대역（約 65 分，₩2,000）'
+       }},
+      {name:'구남로',zh:'九南路購物街',time:'17:00',
+       note:'하이마트·올리브영·자라·스파오 匯聚，邊逛邊等日落後燈光秀。',
+       transport:{
+         primary:'🚶 步行 약 10분 → 해운대해수욕장 방향',
+         backup:'🚌 버스 1001번 (1 정류장）'
+       }},
+      {name:'해운대 빛축제',zh:'海雲臺光之慶典',time:'18:30',
+       note:'冬季限定海灘燈光裝置藝術，12月~1月。免費入場，拍照勝地。'},
+    ]
+  },
+  {
+    id:'d2',label:'Day 2',date:'12/03 (四)',title:'龍宮寺 · 機張 · 아울렛 · ⭐ VBP 啟動 — 水療樂園 21:00',
+    stops:[
+      {name:'해동용궁사',zh:'海東龍宮寺',time:'09:00',
+       note:'臨海懸崖上的寺廟，日出景色壯觀，早去人少。',
+       transport:{
+         primary:'🚌 해운대역 앞 버스 1001번 (기장방향) → 용궁사 하차（約 30 分）',
+         backup:'🚕 택시 해운대역 → 용궁사（約 20 分，₩12,000–15,000）'
+       }},
+      {name:'기장시장',zh:'機張市場',time:'11:00',
+       note:'在地傳統市場，螃蟹、魚板、蔬果新鮮價廉，可買熟食小吃。',
+       transport:{
+         primary:'🚌 버스 139번 기장행 (약 20분) or 택시 약 10분（₩6,000–8,000）',
+         backup:'🚇 동해선 기장역 하차 → 도보 10분'
+       }},
+      {name:'롯데 프리미엄 아울렛 동부산점',zh:'樂天 Premium Outlet 東釜山',time:'13:30',
+       note:'與機張同在오시리아 園區，步行可達。冬季款服飾、戶外品牌齊全，預留 2 小時逛街購物，接著返回市區準備晚上。',
+       transport:{
+         primary:'🚇 동해선 오시리아역 → 부전역 환승 → 2호선 센텀시티역（約 45分）',
+         backup:'🚕 택시（約 40分，₩25,000–32,000）'
+       }},
+      {name:'스파랜드 센텀시티',zh:'Spa Land 新世界百貨',time:'21:00',vbp:true,
+       note:'⭐ VBP 48hr 從這裡開始！有效至 12/05 (六) 21:00。兌換方式：直接到新世界百貨 센텀시티 11F 入口出示 VBP QR Code，工作人員掃碼即可入場，不需預約。韓國頂級水療中心，13 種主題澡堂。建議待 1.5–2 小時後返回住宿。⚠️ 在此之前不可在任何其他 VBP 景點掃碼！'},
+    ]
+  },
+  {
+    id:'d3',label:'Day 3',date:'12/04 (五)',title:'VBP 樂天世界 · X the SKY · 海邊列車 · 🔒 天空膠囊 16:30',
+    stops:[
+      {name:'롯데월드 어드벤처 부산',zh:'樂天世界 釜山（오시리아）',time:'10:00',vbp:true,
+       note:'🎫 VBP 兌換：入口售票亭出示 VBP QR Code → 換取入場手環，直接入場，不需預約。設施包含雲梯、過山車等室內外遊樂。預留 2.5 小時，12:45 前務必出發！',
+       transport:{
+         primary:'🚕 택시 숙소(해운대) → 롯데월드 오시리아（約 25–30分，₩18,000–22,000）',
+         backup:'🚇 2호선 → 동래역 → 동해선 오시리아역（約 40分）'
+       }},
+      {name:'부산엑스더스카이',zh:'X the SKY 展望台',time:'13:30',vbp:true,
+       note:'🎫 VBP 兌換：LCT 大樓 1F 大廳出示 VBP QR Code，換取電梯票後搭乘，不需預約（人多時等電梯約 10–15 分）。59F 頂層玻璃觀景台，海雲臺全景盡收眼底，建議遊覽 1 小時。',
+       transport:{
+         primary:'🚕 택시 오시리아 → LCT 엑스더스카이（約 30–35分，₩20,000–25,000）',
+         backup:'🚇 오시리아역 → 동해선 → 부전역 → 2호선 → 해운대역 → 도보 or 택시 LCT（約 50分）'
+       }},
+      {name:'해리단길',zh:'海里段街',time:'14:30',
+       note:'LCT 步行 10 分鐘可達，沿著巷弄的咖啡廳、小吃、文青雜貨聚集地，午餐 + 散步。14:45 前出發前往미포 搭海邊列車。',
+       transport:{
+         primary:'🚶 해리단길 → 도보 15분 → 미포역（해운대해변열차 출발역）',
+         backup:'🚕 택시 해리단길 → 미포역（약 5분，₩4,000）'
+       }},
+      {name:'해운대해변열차（尾浦→青沙浦）',zh:'海邊列車 尾浦→青沙浦',time:'15:15',vbp:true,
+       note:'🎫 VBP 兌換：미포역 售票口出示 VBP QR Code，換取當班車票。⚠️ 建議提早 15–20 分鐘到售票口確認班次，接天空膠囊要算好時間！沿海岸線單軌電車，全程約 25 分。',
+       transport:{
+         primary:'🚶 청사포역 하차 → 도보 2분 → 다릿돌전망대 散步',
+         backup:'—（同一區域，步行即可）'
+       }},
+      {name:'청사포 다릿돌전망대',zh:'青沙浦踏石展望台',time:'15:50',
+       note:'海邊列車청사포역 下車後步行約 2 分鐘，紅色步道伸入海中，絕佳拍照點。欣賞後往청사포역天空膠囊候車區等候。',
+       transport:{
+         primary:'🚶 전망대에서 도보 2분 → 청사포역 스카이캡슐 탑승구 대기',
+         backup:'—（徒步即可，同一區域內）'
+       }},
+      {name:'스카이캡슐（青沙浦→尾浦）',zh:'天空膠囊列車 青沙浦→尾浦',time:'16:30',
+       note:'⚠️ 已購票 16:30 班次（韓國時間）！提前 15 分到청사포역 閘口等候。全程約 30–35 分，抵達尾浦约 17:10。抵達後在尾浦附近覓食晚餐，返回住宿休息。'},
+    ]
+  },
+  {
+    id:'d4',label:'Day 4',date:'12/05 (六)',title:'🚌 시티투어버스 · 白嶺 · Arte Museum · 🛥️ 鑽石灣遊艇 20:30 + 🚁 無人機秀',
+    stops:[
+      {name:'부산역（시티투어버스 그린라인）',zh:'釜山觀光旅遊巴士 — 綠線出發',time:'09:30',vbp:true,
+       note:'🎫 VBP 兌換：부산역 버스 乘車處上車時，向工作人員出示 VBP QR Code 掃碼即可，不需預約。建議 09:15 前到站等候。綠線（그린라인）停靠：흰여울 → 아르떼뮤지엄 → 오륙도스카이워크 → 용호만 → 자갈치。約每 50 分一班，全日 09:30–16:20。',
+       transport:{
+         primary:'🚇 해운대역 → 2호선 → 서면역 → 1호선 환승 → 부산역（약 35분，₩1,850）',
+         backup:'🚕 택시 숙소 → 부산역（약 30분，₩18,000–22,000）'
+       }},
+      {name:'흰여울문화마을',zh:'白淺灘文化村',time:'10:10',
+       note:'綠線 흰여울 정류장 下車。電影拍攝地，絕壁海景步道，釜山港全景。建議遊覽 30–40 分，再搭下班綠線前往아르떼뮤지엄。',
+       transport:{
+         primary:'🚌 시티투어버스 그린라인（hop back on，次班約 10:50–11:00 出發）',
+         backup:'🚶 도보 아르떼뮤지엄 방향（해양로 따라 약 25–30분）'
+       }},
+      {name:'아르떼뮤지엄 부산',zh:'Arte Museum 釜山',time:'11:00',vbp:true,
+       note:'🎫 VBP 兌換：入口出示 VBP QR Code 掃碼入場。⚠️ 週六人多，強烈建議提前至官網或 Naver 預約時間段（選時段免費）。全球最大沉浸式媒體藝術館，光影花園、無限鏡廳，開放 10:00–20:00。預留 1–1.5 小時。',
+       transport:{
+         primary:'🚌 시티투어버스 그린라인 탑승 → 자갈치 방향（오륙도 경유 가능）',
+         backup:'🚕 택시 아르떼뮤지엄 → 자갈치시장（약 20분，₩12,000–15,000）'
+       }},
+      {name:'자갈치시장',zh:'札嘎其市場',time:'13:30',
+       note:'釜山最大海鮮市場，1–2F 活海鮮現撈現吃，外圍小攤魚板、炒年糕，邊走邊吃。午餐後在附近自由活動（국제시장、BIFF廣場），傍晚前往鑽石灣。',
+       transport:{
+         primary:'🚕 택시 자갈치시장 → 다이아몬드베이 터미널（南區 용호동，약 20–25분，₩12,000–15,000）',
+         backup:'🚌 버스 대연역 방향 → 택시 환승（약 30분 총）'
+       }},
+      {name:'다이아몬드베이 요트',zh:'鑽石灣遊艇',time:'20:30',vbp:true,
+       note:'🎫 VBP 兌換：碼頭售票窗口出示 VBP QR Code 換取船票。⚠️ VBP 21:00 失效，20:30 是最後機會！請務必在 20:00 前到達碼頭完成換票，帶護照。50 分鐘夜間遊艇，航行路線：用湖灣 → 광안대교 → 冬柏島 → 海雲臺 → 返回。地點：南區 용호동（電話 051-990-1540）。',
+       transport:{
+         primary:'— （停靠碼頭，原地欣賞）',
+         backup:'— '
+       }},
+      {name:'광안리 M 드론라이트쇼',zh:'廣安里無人機光影秀（從海上欣賞！）',time:'21:00',
+       note:'⭐ 本週六限定！遊艇航行至廣安大橋（광안대교）下方時，剛好可從海上仰望 100 架無人機在橋前表演光影秀，約 12 分鐘。這個視角是廣安里海灘遊客所看不到的獨特體驗。（冬季 10月–2月：每週六 19:00 & 21:00）'},
+    ]
+  },
+  {
+    id:'d5',label:'Day 5',date:'12/06 (日)',title:'甘川文化村 · 戶川村 · 광복로 聖誕節慶',
+    stops:[
+      {name:'감천문화마을',zh:'甘川文化村',time:'09:00',
+       note:'彩色山城村落，小巷迷宮，《小王子》公仔打卡。建議遊覽 1.5 小時，紀念品店集中在上坡。開放時間 09:00–18:00。',
+       transport:{
+         primary:'🚕 택시 숙소(해운대) → 감천문화마을（约 25分，₩16,000–20,000）',
+         backup:'🚇 2호선 서면역 → 마을버스 1번 or 2번 환승 → 감천（약 40分）'
+       }},
+      {name:'호천마을 남일바 / 호천문화플랫폼',zh:'戶川마을 南一Bar / 文化平台',time:'11:30',
+       note:'海港邊的復古村落咖啡文化區，傳統韓屋改建的咖啡廳，可俯瞰釜山港景，慢遊小館、壁畫巷弄。午餐可在此享用。',
+       transport:{
+         primary:'🚕 택시 호천마을 → 자갈치시장（약 10분，₩6,000–8,000）',
+         backup:'🚌 버스 51번 or 1003번（약 15분）'
+       }},
+      {name:'자갈치시장',zh:'札嘎其市場 · 국제시장',time:'13:00',
+       note:'在此享用午餐後，順遊 국제시장（國際市場）、BIFF 廣場，釜山在地零食、炸雞、魚板一次滿足。',
+       transport:{
+         primary:'🚶 도보 10분 → 광복로（크리스마스트리 행사 지역）',
+         backup:'🚌 버스 70번 or 택시（약 5분）'
+       }},
+      {name:'부산 크리스마스트리 문화축제',zh:'光復路聖誕樹文化慶典',time:'18:00',
+       note:'南浦洞광복로冬季限定聖誕燈飾，大型聖誕樹、街道裝置，天黑後燈光最美（建議 18:00 以後前往）。在周邊餐廳用晚餐，採購伴手禮。'},
+    ]
+  },
+  {
+    id:'d6',label:'Day 6',date:'12/07 (一)',title:'冬柏島散步 · 西面購物 · 返台',
+    stops:[
+      {name:'동백섬 누리마루 APEC하우스',zh:'冬柏島 APEC峰會場館',time:'09:00',
+       note:'木造步道環繞冬柏島，松林、海景、APEC館外觀拍照，冬日寧靜悠閒。免費入場，步行一圈約 40 分鐘。',
+       transport:{
+         primary:'🚌 버스 139번 → 동백섬 정류장（해운대에서 약 10분）',
+         backup:'🚶 해운대해수욕장에서 도보 약 20분'
+       }},
+      {name:'서면역',zh:'西面站 購物街',time:'11:00',
+       note:'釜山最大地下街，服飾、藥妝、小吃。延長路西面直營店集中，血拼購物最後機會。預留 2–3 小時，午餐可在西面美食街解決。',
+       transport:{
+         primary:'🚇 해운대역 → 2호선 → 서면역（约 15分，₩1,450）',
+         backup:'🚕 택시（약 15–20분，₩9,000–12,000）'
+       }},
+      {name:'김해국제공항',zh:'金海國際機場（返台）',time:'出発 3小時前',
+       note:'出境前預留 2.5 小時辦理手續，空橋 Check-in 關閉前 30 分。搭機返台！'},
+    ]
+  },
 ];
-const packing = [
-  '護照（效期 6 個月以上）＋電子機票＋住宿訂單',
-  '上網卡／eSIM 或分享器',
-  '韓元現金（計程車、市場攤販常只收現金）',
-  '洋蔥式保暖穿法：防風外套、圍巾、毛帽、手套（12 月釜山均溫約 2–9°C）',
-  '行動電源、相機／腳架（拍膠囊列車夕陽與燈節）',
-  '折疊購物袋（伴手禮大掃貨用）'
-];
 
-function tagChip(key){ const m=TAG_META[key]; return m?`<span class="tag ${m.cls}">${m.label}</span>`:''; }
-function collectDayTags(day){ const s=new Set(); day.items.forEach(it=>it.tags.forEach(t=>s.add(t))); return [...s]; }
+// ── Leaflet map state ──────────────────────────
+const leafletMaps = {};
+const dayBoundsStore = {};
 
-function naverUrl(kr){ return `https://map.naver.com/v5/search/${encodeURIComponent(kr)}`; }
-
-function renderTime(t){
-  if(!t) return `<div class="item-time">—</div>`;
-  const m = t.match(/^(\d{1,2}:\d{2})～(\d{1,2}:\d{2})$/);
-  if(m) return `<div class="item-time item-time-range"><span class="t">${m[1]}</span><span class="range-sep">↕</span><span class="t">${m[2]}</span></div>`;
-  return `<div class="item-time">${t}</div>`;
+function getCoord(name){
+  return COORDS[name] || null;
 }
 
-function renderItem(it, dayId){
-  const krHtml = it.kr
-    ? `<a href="${naverUrl(it.kr)}" target="_blank" rel="noopener" class="map-link">📍 ${it.kr}</a>`
-    : '';
-  return `<div class="item" data-tags="${it.tags.join(',')}" data-day="${dayId}">
-    ${renderTime(it.time)}
-    <div class="item-body">
-      <h4>${it.title}${krHtml}</h4>
-      <p>${it.desc}</p>
-      ${it.tags.length?`<div class="tags">${it.tags.map(tagChip).join('')}</div>`:''}
-    </div>
-  </div>`;
-}
-
-function renderRouteRow(day){
-  const stops = day.items.filter(it => it.kr);
-  if(!stops.length) return '';
-  const pills = stops.map((it,i)=>`
-    <a class="route-pill" href="${naverUrl(it.kr)}" target="_blank" rel="noopener" title="${it.kr}">
-      <div class="route-pill-num">${i+1}</div>
-      <div class="route-pill-name">${it.title.replace('・','\n')}</div>
-      <div class="route-pill-time">${it.time}</div>
-    </a>${i<stops.length-1?'<span class="route-sep">›</span>':''}`).join('');
-  return `<div class="route-row-wrap">
-    <div class="route-row-head">
-      <span>🗺 今日路線</span>
-      <a href="${naverUrl(stops[0].kr)}" target="_blank" rel="noopener">Naver Map 開啟 →</a>
-    </div>
-    <div class="route-row">${pills}</div>
-  </div>`;
-}
-
-function renderExtrasInCard(day){
-  if(!day.extras||!day.extras.length) return '';
-  const rows = day.extras.map(e=>`<div class="item item-rec" data-tags="" data-day="${day.id}">
-    <div class="rec-time"><span class="rec-badge">順路</span></div>
-    <div class="item-body">
-      <div class="item-rec-name">${e.name}<a href="${naverUrl(e.kr)}" target="_blank" rel="noopener" class="map-link">📍 ${e.kr}</a></div>
-      ${e.hours?`<div class="item-rec-meta">⏰ ${e.hours}${e.addr?' ｜ 📮 '+e.addr:''}</div>`:''}
-      <p class="item-rec-desc">${e.desc}</p>
-    </div>
-  </div>`).join('');
-  return `<div class="extras-divider"><span>📌 順路推薦</span></div>${rows}`;
-}
-
-const CATEG_META = {
-  food:    {ico:'🍜', label:'在地美食'},
-  dessert: {ico:'🧁', label:'甜點'},
-  cafe:    {ico:'☕', label:'咖啡廳'},
-  shop:    {ico:'🛍', label:'購物'},
-};
-
-function renderDayExtras(day){
-  if(!day.extras||!day.extras.length) return '';
-  const cards = day.extras.map(e=>{
-    const cm = CATEG_META[e.categ] || {ico:'📍', label:''};
-    return `<div class="supp-card">
-      <div class="supp-card-ico">${cm.ico}</div>
-      <div class="supp-card-body">
-        <div class="supp-card-name">
-          ${e.name}
-          <a href="${naverUrl(e.kr)}" target="_blank" rel="noopener" class="map-link">📍 ${e.kr}</a>
-        </div>
-        <div class="supp-card-meta">⏰ ${e.hours}${e.addr?' ｜ 📮 '+e.addr:''}</div>
-        <p class="supp-card-desc">${e.desc}</p>
-      </div>
-    </div>`;
-  }).join('');
-  return `<div class="day-extras">
-    <div class="day-extras-head">
-      <span class="deh-label">📌 順路推薦</span>
-      <span class="deh-note">地圖已標示 ★，依動線彈性安排</span>
-    </div>
-    <div class="supp-grid">${cards}</div>
-  </div>`;
-}
-
-function renderDayPanel(day){
-  const tags = collectDayTags(day);
-  return `<div class="day-panel" id="day-${day.id}">
-    <div class="day-header">
-      <div class="tag-inline">${day.label} ／ ${day.date}</div>
-      <h2>${day.theme}</h2>
-      <p class="theme-sub">${day.themeSub}</p>
-    </div>
-    ${renderDayMap(day)}
-    ${tags.length?`<div class="filterbar" data-day="${day.id}">
-      <span class="chip on" data-filter="all">全部</span>
-      ${tags.map(t=>`<span class="chip" data-filter="${t}">${TAG_META[t].label}</span>`).join('')}
-    </div>`:''}
-    <div class="card">
-      ${day.items.map(it=>renderItem(it,day.id)).join('')}
-    </div>
-    ${day.tip?`<div class="tip">📍 ${day.tip}</div>`:''}
-    ${renderDayExtras(day)}
-  </div>`;
-}
-
-const dayRail = document.getElementById('dayRail');
-days.forEach((d,i)=>{
-  const btn=document.createElement('button');
-  btn.className='stop'+(i===0?' active':'');
-  btn.dataset.day=d.id;
-  btn.innerHTML=`<div class="dot"></div><div class="lbl">${d.label.replace('Day ','D')}</div><div class="sub">${d.date.slice(0,5)}</div>`;
-  dayRail.appendChild(btn);
-});
-document.getElementById('dayPanels').innerHTML = days.map(renderDayPanel).join('');
-document.getElementById('day-'+days[0].id).classList.add('active');
-// init first day map; refit after first paint to ensure correct dimensions
-initDayMap(days[0]);
-requestAnimationFrame(()=>{ leafletMaps['d1']?.invalidateSize(); fitDayMapBounds('d1'); });
-
-dayRail.addEventListener('click', e=>{
-  const btn=e.target.closest('.stop'); if(!btn) return;
-  document.querySelectorAll('#dayRail .stop').forEach(s=>s.classList.toggle('active', s===btn));
-  document.querySelectorAll('.day-panel').forEach(p=>p.classList.toggle('active', p.id==='day-'+btn.dataset.day));
-  const day = days.find(d=>d.id===btn.dataset.day);
-  if(day){
-    // init on first visit; always invalidateSize + refit so markers are correctly positioned
-    requestAnimationFrame(()=>{
-      initDayMap(day);
-      const m = leafletMaps[day.id];
-      if(m){ m.invalidateSize(); fitDayMapBounds(day.id); }
-    });
+function fitDayMapBounds(dayId){
+  const map = leafletMaps[dayId];
+  if(!map) return;
+  map.invalidateSize();
+  if(dayBoundsStore[dayId]){
+    map.fitBounds(dayBoundsStore[dayId],{padding:[30,30],maxZoom:14});
   }
-});
+}
 
-document.getElementById('dayPanels').addEventListener('click', e=>{
-  const chip=e.target.closest('.filterbar .chip'); if(!chip) return;
-  const bar=chip.closest('.filterbar');
-  bar.querySelectorAll('.chip').forEach(c=>c.classList.remove('on'));
-  chip.classList.add('on');
-  const filter=chip.dataset.filter, dayId=bar.dataset.day;
-  document.querySelectorAll(`.item[data-day="${dayId}"]`).forEach(it=>{
-    const t=it.dataset.tags.split(',').filter(Boolean);
-    it.classList.toggle('dim', !(filter==='all'||t.includes(filter)));
+function initDayMap(day){
+  if(leafletMaps[day.id]) return;
+  const el = document.getElementById('map-'+day.id);
+  if(!el) return;
+  const map = L.map(el,{zoomControl:true,scrollWheelZoom:false});
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',{
+    attribution:'© OpenStreetMap',maxZoom:18
+  }).addTo(map);
+  leafletMaps[day.id] = map;
+
+  const pts = [];
+  // Main stops
+  day.stops.forEach((s,i)=>{
+    const c = getCoord(s.name);
+    if(!c) return;
+    pts.push(c);
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="width:28px;height:28px;border-radius:50%;background:${s.vbp?'#c04040':'#4f8ef7'};
+        border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+        color:#fff;font-size:12px;font-weight:700;box-shadow:0 2px 6px rgba(0,0,0,.5)">${i+1}</div>`,
+      iconSize:[28,28],iconAnchor:[14,14]
+    });
+    L.marker(c,{icon}).addTo(map).bindPopup(`<b>${i+1}. ${s.zh||s.name}</b>${s.time?'<br>⏰ '+s.time:''}`);
   });
-});
-
-document.getElementById('guideContent').innerHTML = `
-  <div class="guide-grid">
-    <div class="mini-card"><h4>☕ 旅伴早晨必備・冰美式</h4>
-      <ul>${guides.coffee.map(c=>`<li><b>${c.name}</b><br>${c.note}</li>`).join('')}</ul></div>
-    <div class="mini-card"><h4>📸 人生四格拍貼機分佈</h4>
-      <ul>${guides.photo.map(c=>`<li><b>${c.name}</b><br>${c.note}</li>`).join('')}</ul></div>
-  </div>
-  <div class="card" style="padding-top:16px;">
-    <h4 style="color:var(--teal-deep);font-size:13.5px;margin-bottom:4px;">🛍️ 推薦中性潮牌 & 文創商品速查</h4>
-    <div class="table-wrap"><table class="brand-table">
-      <tr><th>品牌</th><th>風格</th><th>推薦必買</th></tr>
-      ${guides.brands.map(b=>`<tr><td><b>${b.name}</b>${b.kr}</td><td>${b.style}</td><td>${b.buy}</td></tr>`).join('')}
-    </table></div>
-  </div>`;
-
-function renderCheckList(container, list){
-  container.innerHTML = list.map((t,i)=>`<div class="check-item" data-idx="${i}"><div class="box"></div><div class="txt">${t}</div></div>`).join('');
-  container.addEventListener('click', e=>{
-    const item=e.target.closest('.check-item'); if(item) item.classList.toggle('done');
+  // Extras
+  const ex = EXTRAS[day.id]||[];
+  ex.forEach(e=>{
+    const c = getCoord(e.kr)||getCoord(e.name);
+    if(!c) return;
+    pts.push(c);
+    const icon = L.divIcon({
+      className:'',
+      html:`<div style="width:24px;height:24px;border-radius:50%;background:${CATEG_META[e.categ].color};
+        border:2px solid #fff;display:flex;align-items:center;justify-content:center;
+        font-size:11px;box-shadow:0 2px 6px rgba(0,0,0,.5)">★</div>`,
+      iconSize:[24,24],iconAnchor:[12,12]
+    });
+    L.marker(c,{icon}).addTo(map).bindPopup(`<b>★ ${e.name}</b><br>${e.hours||''}`);
   });
-}
-renderCheckList(document.getElementById('todoList'), todos);
-renderCheckList(document.getElementById('packList'), packing);
 
-document.getElementById('topTabs').addEventListener('click', e=>{
-  const tab=e.target.closest('.top-tab'); if(!tab) return;
-  document.querySelectorAll('.top-tab').forEach(t=>t.classList.toggle('active', t===tab));
-  document.querySelectorAll('.page').forEach(p=>p.classList.toggle('active', p.id==='page-'+tab.dataset.page));
-  window.scrollTo({top:0, behavior:'smooth'});
-});
+  if(pts.length>0){
+    const b = L.latLngBounds(pts.map(p=>L.latLng(p[0],p[1])));
+    dayBoundsStore[day.id] = b;
+    map.fitBounds(b,{padding:[30,30],maxZoom:14});
+  }
+}
 
-function fmtDelta(ms){
-  if(ms<=0) return '已開放／已出發';
-  const d=Math.floor(ms/86400000), h=Math.floor((ms%86400000)/3600000);
-  return `${d} 天 ${h} 小時`;
+// ── Render ─────────────────────────────────────
+function renderAll(){
+  const tabsEl = document.getElementById('tabs');
+  const panelsEl = document.getElementById('panels');
+
+  days.forEach((day,di)=>{
+    // Tab
+    const tab = document.createElement('div');
+    tab.className='tab'+(di===0?' active':'');
+    tab.innerHTML=`<b>${day.label}</b><br><span style="font-size:.7rem">${day.date}</span>`;
+    tab.onclick=()=>switchDay(day.id);
+    tabsEl.appendChild(tab);
+
+    // Panel
+    const panel = document.createElement('div');
+    panel.className='day-panel'+(di===0?' active':'');
+    panel.id='panel-'+day.id;
+
+    let html=`<div class="day-header"><div class="day-title">${day.title}</div>
+      <div class="day-date">${day.date}</div></div>
+      <div class="map-wrap"><div id="map-${day.id}" style="height:100%;width:100%"></div></div>
+      <div class="legend">
+        <div class="leg-item"><div class="leg-dot" style="background:#4f8ef7"></div>主要景點</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#c04040"></div>VBP景點</div>
+        <div class="leg-item"><div class="leg-dot" style="background:#3dba7a"></div>推薦補充</div>
+      </div>`;
+
+    day.stops.forEach((s,si)=>{
+      const isVbp = !!s.vbp;
+      html+=`<div class="stop-card${isVbp?' vbp-stop':''}">
+        <div class="stop-num${isVbp?' vbp':''}">${si+1}</div>
+        <div class="stop-body">
+          <div class="stop-name">${s.zh||s.name}</div>
+          <div class="stop-kr">${s.name}</div>
+          <div class="stop-row">
+            ${s.time?`<span class="stop-time${s.time.includes('16:30')?' pinned':''}">${s.time.includes('16:30')?'🔒 '+s.time:s.time}</span>`:''}
+            ${isVbp?'<span class="stop-vbp">🎫 VBP</span>':''}
+          </div>
+          ${s.note?`<div class="stop-note">${s.note}</div>`:''}
+        </div>
+      </div>`;
+      // transport leg (after stop, before next)
+      if(s.transport && si < day.stops.length-1){
+        html+=`<div class="transport-leg">
+          <div class="transport-primary"><span class="transport-label lbl-pri">前往</span>${s.transport.primary}</div>
+          <div class="transport-backup"><span class="transport-label lbl-bak">備案</span>${s.transport.backup}</div>
+        </div>`;
+      }
+    });
+
+    // Extras
+    const extras = EXTRAS[day.id]||[];
+    if(extras.length>0){
+      html+=`<div class="extras-section"><div class="extras-title">順路推薦</div>`;
+      extras.forEach(e=>{
+        const m=CATEG_META[e.categ]||CATEG_META.food;
+        html+=`<div class="extra-card">
+          <div class="extra-icon">${m.icon}</div>
+          <div>
+            <div class="extra-name">${e.name}</div>
+            <div class="extra-kr">${e.kr}</div>
+            <div class="extra-desc">${e.desc}</div>
+            <div class="extra-meta">
+              ${e.hours?`<span>🕐 ${e.hours}</span>`:''}
+              ${e.addr?`<span>📍 ${e.addr}</span>`:''}
+            </div>
+          </div>
+        </div>`;
+      });
+      html+=`</div>`;
+    }
+
+    panel.innerHTML=html;
+    panelsEl.appendChild(panel);
+  });
+
+  // init first day map
+  setTimeout(()=>initDayMap(days[0]),100);
 }
-function updateCountdowns(){
-  const now=new Date();
-  const ticket=new Date('2026-11-03T06:00:00+08:00');
-  document.getElementById('cd-ticket').textContent = fmtDelta(ticket-now);
+
+function switchDay(dayId){
+  document.querySelectorAll('.tab').forEach((t,i)=>{
+    t.classList.toggle('active', days[i].id===dayId);
+  });
+  document.querySelectorAll('.day-panel').forEach(p=>{
+    p.classList.toggle('active', p.id==='panel-'+dayId);
+  });
+  setTimeout(()=>{
+    const day = days.find(d=>d.id===dayId);
+    if(day){ initDayMap(day); fitDayMapBounds(dayId); }
+  },80);
 }
-updateCountdowns();
-setInterval(updateCountdowns, 60000);
+
+renderAll();
 </script>
 </body>
 </html>
